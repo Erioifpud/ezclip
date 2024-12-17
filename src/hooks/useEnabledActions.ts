@@ -1,4 +1,5 @@
 import { pluginStore } from "@/store/plugin";
+import { getActionId } from "@/store/plugin/utils";
 import { flatMap } from "lodash-es";
 
 export function useEnabledActions() {
@@ -7,7 +8,7 @@ export function useEnabledActions() {
   
   return flatMap(allPlugins, plugin => 
     plugin.actions.filter(action => 
-      enabledActions.includes(`${plugin.namespace}.${action.id}`)
+      enabledActions.includes(getActionId(action))
     )
   );
 }
