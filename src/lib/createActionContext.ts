@@ -5,7 +5,7 @@ export interface SelectionInfo {
   position: { x: number; y: number };
 }
 
-export interface PluginContext {
+export interface ActionContext {
   selection: SelectionInfo;
   tooltip: {
     close: () => void;
@@ -28,7 +28,7 @@ export interface PluginContext {
   version: number;
 }
 
-export const createPluginContext = (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>, selection: SelectionInfo): PluginContext => ({
+export const createActionContext = (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>, selection: SelectionInfo): ActionContext => ({
   selection: {
     text: selection.text,
     position: selection.position,

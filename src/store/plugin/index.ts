@@ -1,5 +1,5 @@
 import { proxy } from "valtio";
-import { PluginContext } from "@/lib/createPluginContext";
+import { ActionContext } from "@/lib/createActionContext";
 import { PluginFormField } from "./config";
 
 /*
@@ -15,8 +15,8 @@ export interface Action {
   icon: string;        // 动作图标
   description?: string;// 动作描述
   // 判断是否显示此动作按钮
-  shouldShow?: (context: PluginContext) => boolean;
-  execute: (context: PluginContext) => void | Promise<void>;
+  shouldShow?: (text: string) => boolean;
+  execute: (context: ActionContext) => void | Promise<void>;
   // 动作所属的插件，自动注入
   _plugin?: Plugin;
 }
