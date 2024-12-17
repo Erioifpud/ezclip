@@ -1,29 +1,19 @@
 import { useSelection } from './hooks/useSelection';
 import { SelectionTooltip } from './components/SelectionTooltip';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { tooltipStore } from './store/tooltip';
 
 function App() {
   const selection = useSelection();
-  const [showTooltip, setShowTooltip] = useState(false);
 
-  // 当有新的选中文本时显示 tooltip
   useEffect(() => {
     if (selection) {
-      setShowTooltip(true);
+      tooltipStore.visible = true;
+      tooltipStore.position = selection.position;
     }
   }, [selection]);
 
-  return (
-    <>
-      {selection && showTooltip && (
-        <SelectionTooltip
-          text={selection.text}
-          position={selection.position}
-          onClose={() => setShowTooltip(false)}
-        />
-      )}
-    </>
-  );
+  return <SelectionTooltip />;
 }
 
 export default App;
