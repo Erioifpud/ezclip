@@ -37,7 +37,7 @@ export const SelectionTooltip = () => {
       <div className="flex gap-2">
         {actions.map(plugin => (
           <button
-            key={plugin._plugin?.namespace}
+            key={plugin._plugin?.namespace + plugin.name}
             onClick={
               (ev) => {
                 plugin.action(createPluginContext(ev, {
