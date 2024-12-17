@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { useSnapshot } from 'valtio';
 import { tooltipStore, tooltipActions } from '../store/tooltip';
-import { useEnabledActions } from '@/hooks/plugin';
+import { useEnabledActions } from '@/hooks/useEnabledActions';
 import { createPluginContext } from '@/lib/createPluginContext';
 import { SettingsIcon } from 'lucide-react';
+import { getActionId } from '@/store/plugin/utils';
 
 export const SelectionTooltip = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -35,12 +36,12 @@ export const SelectionTooltip = () => {
     >
       {message && <div className="text-sm text-gray-600">{message}</div>}
       <div className="flex gap-2">
-        {actions.map(plugin => (
+        {actions.map(action => (
           <button
-            key={plugin._plugin?.namespace + plugin.name}
+            key={getActionId(action)}
             onClick={
               (ev) => {
-                plugin.action(createPluginContext(ev, {
+                action.execute(createPluginContext(ev, {
                   text: message || '',
                   position: position,
                 }));
@@ -48,7 +49,7 @@ export const SelectionTooltip = () => {
             }
             className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
-            {plugin.name}
+            {action.icon}
           </button>
         ))}
 

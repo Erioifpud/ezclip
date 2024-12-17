@@ -2,12 +2,21 @@ import { proxy } from "valtio";
 import { PluginContext } from "@/lib/createPluginContext";
 import { PluginFormField } from "./config";
 
+/*
+插件作为“容器”，主要用处是注册 action 和提供基本信息
+action 是插件提供的功能单元，会作为按钮显示在 Tooltip 中
+禁用和启用的概念也是针对 action 的，所以当插件被安装的时候，他就是“启用”的
+当所有 action 都被禁用时，插件在**逻辑上**就被禁用了，因为他的 action 全都不可用
+*/
+
 export interface Action {
   id: string;          // 动作唯一标识，如 'base64.encode'
   name: string;        // 动作名称，如 '编码'
   icon: string;        // 动作图标
   description?: string;// 动作描述
-  action: (context: PluginContext) => void | Promise<void>;
+  // 判断是否显示此动作按钮
+  shouldShow?: (context: PluginContext) => boolean;
+  execute: (context: PluginContext) => void | Promise<void>;
   // 动作所属的插件，自动注入
   _plugin?: Plugin;
 }
@@ -37,16 +46,15 @@ export interface Plugin {
 export interface PluginStore {
   remotePlugins: Plugin[];
   localPlugins: Plugin[];
-  // 启用插件的 id
-  enabledPlugins: string[];
-  // 插件的配置
+  // 记录启用的 action id
+  enabledActions: string[];  // 格式: 'namespace.actionId'
+  // 插件配置保持不变
   pluginSettings: Record<string, Record<string, any>>;
 }
 
 export const pluginStore = proxy<PluginStore>({
   remotePlugins: [],
   localPlugins: [],
-  // 启用插件的 id
-  enabledPlugins: [],
+  enabledActions: [],
   pluginSettings: {},
 });
