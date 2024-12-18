@@ -1,6 +1,8 @@
 import { proxy } from "valtio";
 import { ActionContext } from "@/lib/createActionContext";
 import { PluginFormField } from "./config";
+import { builtinPlugin } from "./builtin";
+import { parsePlugin } from "@/lib/parsePlugin";
 
 /*
 插件作为“容器”，主要用处是注册 action 和提供基本信息
@@ -40,12 +42,13 @@ export interface Plugin {
   tags?: string[];
   homepage?: string;
   // 插件来源（注册时不需要提供，加载插件时自动注入来源）
-  _source?: string;
+  _source?: 'local' | 'remote' | 'builtin';
 }
 
 export interface PluginStore {
   remotePlugins: Plugin[];
   localPlugins: Plugin[];
+  builtinPlugins: Plugin[];
   // 记录启用的 action id
   enabledActions: string[];  // 格式: 'namespace.actionId'
   // 插件配置保持不变
@@ -55,6 +58,11 @@ export interface PluginStore {
 export const pluginStore = proxy<PluginStore>({
   remotePlugins: [],
   localPlugins: [],
-  enabledActions: [],
+  builtinPlugins: [
+    parsePlugin('builtin', builtinPlugin),
+  ],
+  enabledActions: [
+    'com.eclip.builtin.builtin.copy',
+  ],
   pluginSettings: {},
 });

@@ -51,7 +51,7 @@ export const SelectionTooltip = () => {
                     createActionContext(ev, {
                       text: message || '',
                       position: position,
-                    })
+                    }, action._plugin!)
                   );
                 }
               }
