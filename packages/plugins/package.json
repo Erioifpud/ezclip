@@ -1,0 +1,15 @@
+{
+  "name": "@ezclip/plugins",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@ezclip/core": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^5.2.12",
+    "typescript": "^5.4.5"
+  }
+}
