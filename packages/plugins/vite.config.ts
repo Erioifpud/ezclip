@@ -8,13 +8,14 @@ export default defineConfig({
         example: 'src/example/index.ts'
       },
       formats: ['umd'],
-      name: 'EzclipPlugin'
+      name: '[name]'
     },
     rollupOptions: {
       output: {
         entryFileNames: '[name]/index.js',
         format: 'umd',
-        exports: 'named'
+        exports: 'default',
+        extend: true,
       }
     }
   }
