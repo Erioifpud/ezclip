@@ -14,8 +14,12 @@ export const createSandbox: () => CodeSandbox = () => {
 
   const sandbox = new Proxy(Object.create(null), {
     has: () => true,
-    get: (_, p: PropertyKey) => (injection.has(p) ? injection.get(p) : (window as any)[p]),
-    set: (_, p: PropertyKey, v) => !injection.has(p) && ((window as any)[p] = v),
+    get: (_, p: PropertyKey) => {
+      return (injection.has(p) ? injection.get(p) : (window as any)[p])
+    },
+    set: (_, p: PropertyKey, v) => {
+      return !injection.has(p) && ((window as any)[p] = v)
+    },
   })
 
   const codeKey = "__code__"
@@ -28,6 +32,7 @@ export const createSandbox: () => CodeSandbox = () => {
 
   return {
     run: (code: string) => {
+      injection.set('module', { exports: {} })
       injection.set('exports', {})
       injection.set(codeKey, code)
       let returned
@@ -36,8 +41,8 @@ export const createSandbox: () => CodeSandbox = () => {
       } catch (e) {
         throw new LoadCodeError(undefined, { cause: e })
       }
-      const exportsValues = Object.values(injection.get('exports') as Record<string, unknown>)
-      const exported = exportsValues.length > 0 ? exportsValues[0] : undefined
+      const module = injection.get('module') as Record<string, unknown>
+      const exported = module?.exports
       return [exported, returned]
     },
   }
