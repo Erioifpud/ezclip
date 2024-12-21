@@ -18,6 +18,8 @@ export interface AppState {
   theme: Theme;
   // 颜色
   color: Color;
+  // 插件 CDN 根路径
+  cdnRoot: string;
 }
 
 export const appStore = proxy<AppState>({
@@ -25,4 +27,5 @@ export const appStore = proxy<AppState>({
   blackList: [],
   theme: 'light',
   color: 'blue',
+  cdnRoot: '',
 });
