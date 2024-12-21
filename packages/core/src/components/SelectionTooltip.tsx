@@ -55,7 +55,11 @@ export const SelectionTooltip = () => {
                   );
                 }
               }
-              className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-3 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/80"
+              style={{
+                ...(action.primaryColor ? { backgroundColor: action.primaryColor } : {}),
+                ...(action.secondaryColor ? { color: action.secondaryColor } : {}),
+              }}
             >
               {action.icon}
             </button>
@@ -64,7 +68,7 @@ export const SelectionTooltip = () => {
 
         {/* 设置 */}
         <button
-          className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
+          className="px-3 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/80"
         >
           <SettingsIcon className="w-4 h-4" />
         </button>

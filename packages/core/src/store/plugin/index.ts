@@ -19,6 +19,8 @@ export interface Action {
   // 判断是否显示此动作按钮
   shouldShow?: (text: string) => boolean;
   execute: (context: ActionContext) => void | Promise<void>;
+  primaryColor?: string;
+  secondaryColor?: string;
   // 动作所属的插件，自动注入
   _plugin?: Plugin;
 }
