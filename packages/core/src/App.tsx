@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div
-      className="fixed w-0 h-0 top-0 left-0 overflow-visible"
+      className="ec-fixed ec-w-0 ec-h-0 ec-top-0 ec-left-0 ec-overflow-visible"
       style={{
         ...baseColor,
       }}

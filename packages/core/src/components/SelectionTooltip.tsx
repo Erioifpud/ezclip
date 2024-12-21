@@ -27,15 +27,15 @@ export const SelectionTooltip = () => {
   return (
     <div
       ref={tooltipRef}
-      className="selection-tooltip fixed z-50 bg-white rounded-lg shadow-lg p-2 flex gap-2 flex-col"
+      className="selection-tooltip ec-fixed ec-z-50 ec-bg-white ec-rounded-lg ec-shadow-lg ec-p-2 ec-flex ec-gap-2 ec-flex-col"
       style={{
         left: position.x,
         top: position.y - 10,
         transform: 'translate(-50%, -100%)'
       }}
     >
-      {message && <div className="text-sm text-gray-600">{message}</div>}
-      <div className="flex gap-2">
+      {message && <div className="ec-text-sm ec-text-gray-600">{message}</div>}
+      <div className="ec-flex ec-gap-2">
         {actions.map(action => {
           // 根据 action 自己的 shouldShow 函数判断是否显示
           const shouldShowFlag = action.shouldShow?.(message || '') ?? true;
@@ -55,7 +55,7 @@ export const SelectionTooltip = () => {
                   );
                 }
               }
-              className="px-3 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/80"
+              className="ec-px-3 ec-py-1 ec-bg-primary ec-text-primary-foreground ec-rounded ec-hover:ec-bg-primary/80"
               style={{
                 ...(action.primaryColor ? { backgroundColor: action.primaryColor } : {}),
                 ...(action.secondaryColor ? { color: action.secondaryColor } : {}),
@@ -68,9 +68,9 @@ export const SelectionTooltip = () => {
 
         {/* 设置 */}
         <button
-          className="px-3 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/80"
+          className="ec-px-3 ec-py-1 ec-bg-primary ec-text-primary-foreground ec-rounded ec-hover:ec-bg-primary/80"
         >
-          <SettingsIcon className="w-4 h-4" />
+          <SettingsIcon className="ec-w-4 ec-h-4" />
         </button>
       </div>
     </div>
