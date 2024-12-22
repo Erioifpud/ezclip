@@ -45,6 +45,8 @@ export interface Plugin {
   homepage?: string;
   // 插件来源（注册时不需要提供，加载插件时自动注入来源）
   _source?: 'local' | 'remote' | 'builtin';
+  // 本地插件的源码
+  _sourceCode?: string;
 }
 
 export interface PluginStore {
