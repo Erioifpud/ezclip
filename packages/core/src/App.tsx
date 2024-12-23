@@ -2,11 +2,16 @@ import { useSelection } from './hooks/useSelection';
 import { SelectionTooltip } from './components/SelectionTooltip';
 import { useEffect, useMemo } from 'react';
 import { tooltipStore } from './store/tooltip';
-import { appStore } from './store/app';
 import { baseColors } from './style/registry-base-colors';
+import { Settings } from './pages/settings';
+import { SettingsIcon } from 'lucide-react';
+import { settingsActions } from './store/settings';
+import { useSnapshot } from 'valtio/react';
+import { appStore } from './store/app';
 
 function App() {
   const selection = useSelection();
+  const appState = useSnapshot(appStore);
 
   useEffect(() => {
     if (selection) {
@@ -17,14 +22,14 @@ function App() {
 
   // 设置主题颜色
   const baseColor = useMemo(() => {
-    const colorSetIndex = baseColors.findIndex((color) => color.name === appStore.color);
+    const colorSetIndex = baseColors.findIndex((color) => color.name === appState.color);
     if (colorSetIndex === -1) return {};
     const colorSet = baseColors[colorSetIndex];
     // TODO: 暂时只支持 light 主题
     const cssVars = colorSet.cssVars.light;
     // add -- prefix
     return Object.fromEntries(Object.entries(cssVars).map(([key, value]) => [`--${key}`, value]));
-  }, [appStore.color]);
+  }, [appState.color]);
 
   return (
     <div
@@ -34,6 +39,17 @@ function App() {
       }}
     >
       <SelectionTooltip />
+      {/* 设置触发按钮 */}
+      <div
+        onClick={() => {
+          settingsActions.toggleSettings();
+        }}
+        className="ec-fixed ec-bottom-4 ec-left-4 ec-z-50 ec-p-4 ec-rounded-full ec-bg-white ec-border ec-border-gray-200 ec-shadow-lg ec-cursor-pointer"
+      >
+        <SettingsIcon className="ec-w-4 ec-h-4" />
+      </div>
+      {/* 设置弹窗 */}
+      <Settings />
     </div>
   );
 }

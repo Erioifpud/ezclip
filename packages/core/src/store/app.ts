@@ -27,5 +27,20 @@ export const appStore = proxy<AppState>({
   blackList: [],
   theme: 'light',
   color: 'blue',
-  cdnRoot: '',
+  cdnRoot: 'https://cdn.jsdelivr.net/npm',
 });
+
+export const appActions = {
+  setColor(color: Color) {
+    appStore.color = color;
+  },
+  removeSource(url: string) {
+    appStore.sources = appStore.sources.filter(source => source.url !== url);
+  },
+  setBlacklist(list: string[]) {
+    appStore.blackList = list
+  },
+  setCDNRoot(cdn: string) {
+    appStore.cdnRoot = cdn;
+  },
+}
