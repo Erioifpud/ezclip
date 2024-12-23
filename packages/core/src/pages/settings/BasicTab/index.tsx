@@ -87,7 +87,7 @@ export const SettingsTab = memo(() => {
         <div className="ec-space-y-1.5 ec-mt-4">
           <Label className="ec-text-md">应用源</Label>
           <div className="ec-flex ec-flex-col ec-gap-2">
-            {appState.sources.map(source => {
+            {!!appState.sources.length && appState.sources.map(source => {
               return (
                 <div key={source.url} className="ec-flex ec-items-center ec-justify-between ec-border ec-p-2 ec-rounded-lg">
                   <div className="ec-flex ec-flex-col">
@@ -108,6 +108,9 @@ export const SettingsTab = memo(() => {
                 </div>
               )
             })}
+            {!appState.sources.length && (
+              <div className="ec-rounded-lg ec-p-2 ec-text-muted-foreground ec-text-center ec-border ec-border-dashed ec-text-sm">暂无应用源</div>
+            )}
           </div>
         </div>
 
