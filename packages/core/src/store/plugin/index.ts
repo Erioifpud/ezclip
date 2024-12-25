@@ -57,6 +57,8 @@ export interface PluginStore {
   enabledActions: string[];  // 格式: 'namespace.actionId'
   // 插件配置保持不变
   pluginSettings: Record<string, Record<string, any>>;
+  // 已安装的插件
+  installedPlugins: Plugin[];
 }
 
 export const pluginStore = proxy<PluginStore>({
@@ -69,4 +71,7 @@ export const pluginStore = proxy<PluginStore>({
     'com.eclip.builtin.builtin.copy',
   ],
   pluginSettings: {},
+  get installedPlugins() {
+    return [...this.builtinPlugins, ...this.localPlugins, ...this.remotePlugins];
+  },
 });
