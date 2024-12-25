@@ -1,6 +1,6 @@
 import { Plugin } from "@/store/plugin";
 
-export const parsePlugin = (source: 'local' | 'remote' | 'builtin', plugin: Plugin) => {
+export const parsePlugin = (source: 'local' | 'remote' | 'builtin', plugin: Plugin, code: string) => {
   const { actions } = plugin;
   actions.forEach(action => {
     action._plugin = plugin;
@@ -13,5 +13,6 @@ export const parsePlugin = (source: 'local' | 'remote' | 'builtin', plugin: Plug
     }
   });
   plugin._source = source;
+  plugin._sourceCode = code;
   return plugin;
 }
