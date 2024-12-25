@@ -9,6 +9,7 @@ import { baseColors } from "@/style/registry-base-colors";
 import { Check, SettingsIcon, Trash2Icon } from "lucide-react";
 import { memo } from "react";
 import { useSnapshot } from "valtio";
+import { TitleBar } from "../components/TitleBar";
 
 const COLORS: Color[] = ['zinc', 'red', 'rose', 'orange', 'green', 'blue', 'yellow', 'violet'];
 const COLOR_SETS = baseColors
@@ -38,10 +39,11 @@ export const SettingsTab = memo(() => {
   return (
     <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full">
       {/* 标题栏 */}
-      <div className="ec-flex ec-items-center ec-w-full ec-h-10 ec-gap-2 ec-border-b ec-border-gray-200">
+      {/* <div className="ec-flex ec-items-center ec-w-full ec-h-10 ec-gap-2 ec-border-b ec-border-gray-200">
         <SettingsIcon className="ec-w-4 ec-h-4" />
         <span>设置</span>
-      </div>
+      </div> */}
+      <TitleBar title="设置" icon={<SettingsIcon className="ec-w-4 ec-h-4" />} />
       {/* 内容区 */}
       <ScrollArea className="ec-flex ec-flex-col ec-gap-4 ec-overflow-y-auto ec-px-2" >
         {/* 主题色 */}

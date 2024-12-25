@@ -3,13 +3,17 @@ import { settingsStore, SettingsTab as SettingsTabType } from '@/store/settings'
 import { useMemo } from 'react';
 import { VTab } from './components/VTab';
 import { SettingsTab } from './BasicTab';
+import { CenterTab } from './CenterTab';
+import { AboutTab } from './AboutTab';
+import { PluginTab } from './PluginTab';
+import { DebugTab } from './DebugTab';
 
 export const TAB_COMPONENT: Record<SettingsTabType, React.ComponentType<any> | null> = {
-  remote: null,
-  local: null,
-  sources: null,
-  settings: SettingsTab,
-  about: null
+  manage: PluginTab,
+  center: CenterTab,
+  basic: SettingsTab,
+  about: AboutTab,
+  debug: DebugTab
 } as const;
 
 export const Settings = () => {

@@ -1,6 +1,6 @@
 import { proxy } from 'valtio';
 
-export type SettingsTab = 'remote' | 'local' | 'sources' | 'settings' | 'about';
+export type SettingsTab = 'center' | 'manage' | 'basic' | 'about' | 'debug';
 
 interface SettingsStore {
   open: boolean;
@@ -9,7 +9,7 @@ interface SettingsStore {
 
 export const settingsStore = proxy<SettingsStore>({
   open: false,
-  activeTab: 'settings'
+  activeTab: 'basic'
 });
 
 export const settingsActions = {

@@ -6,17 +6,17 @@ import { useSnapshot } from "valtio/react";
 const TAB_LIST: { label: string; value: SettingsTab; icon: React.ReactNode }[] = [
   {
     label: '插件中心',
-    value: 'sources',
+    value: 'center',
     icon: <AppWindowIcon   className="ec-w-4 ec-h-4" />
   },
   {
     label: '插件管理',
-    value: 'remote',
+    value: 'manage',
     icon: <PlugIcon className="ec-w-4 ec-h-4" />
   },
   {
     label: '设置',
-    value: 'settings',
+    value: 'basic',
     icon: <SettingsIcon className="ec-w-4 ec-h-4" />
   },
   {
@@ -26,7 +26,7 @@ const TAB_LIST: { label: string; value: SettingsTab; icon: React.ReactNode }[] =
   },
   {
     label: '调试',
-    value: 'local',
+    value: 'debug',
     icon: <BugIcon className="ec-w-4 ec-h-4" />
   },
 ]
