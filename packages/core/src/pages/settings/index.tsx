@@ -41,7 +41,7 @@ export const Settings = () => {
             <VTab />
           </div>
           {/* 右侧内容区 */}
-          <div className="ec-flex-1">
+          <div className="ec-flex-1 ec-w-full ec-overflow-x-hidden">
             {ActiveTabComponent ? <ActiveTabComponent /> : null}
           </div>
         </div>

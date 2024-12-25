@@ -45,7 +45,7 @@ export const SettingsTab = memo(() => {
       </div> */}
       <TitleBar title="设置" icon={<SettingsIcon className="ec-w-4 ec-h-4" />} />
       {/* 内容区 */}
-      <ScrollArea className="ec-flex ec-flex-col ec-gap-4 ec-overflow-y-auto ec-px-2" >
+      <div data-ec-scrollbar className="ec-flex ec-flex-col ec-gap-4 ec-overflow-y-auto ec-px-2 ec-h-full">
         {/* 主题色 */}
         <div className="ec-space-y-1.5">
           <Label className="ec-text-md">主题色</Label>
@@ -91,13 +91,16 @@ export const SettingsTab = memo(() => {
           <div className="ec-flex ec-flex-col ec-gap-2">
             {!!appState.sources.length && appState.sources.map(source => {
               return (
-                <div key={source.url} className="ec-flex ec-items-center ec-justify-between ec-border ec-p-2 ec-rounded-lg">
-                  <div className="ec-flex ec-flex-col">
-                    <span className="ec-font-semibold ec-tracking-tight ec-text-card-foreground">{source.name}</span>
-                    <span className="ec-text-muted-foreground">{source.url}</span>
+                <div
+                  key={source.url}
+                  className="ec-flex ec-items-center ec-justify-between ec-border ec-p-2 ec-rounded-lg"
+                >
+                  <div className="ec-flex ec-flex-col ec-flex-grow ec-min-w-0">
+                    <span className="ec-font-semibold ec-tracking-tight ec-text-card-foreground ec-truncate">{source.name}</span>
+                    <span className="ec-text-muted-foreground ec-truncate" title={source.url}>{source.url}</span>
                   </div>
                   <Button
-                    className="ec-text-destructive ec-border ec-border-transparent hover:ec-border-destructive hover:ec-text-destructive"
+                    className="ec-text-destructive ec-border ec-border-transparent ec-flex-shrink-0 hover:ec-border-destructive hover:ec-text-destructive ec-ml-2"
                     variant="ghost"
                     size="sm"
                     onClick={() => {
@@ -151,7 +154,7 @@ export const SettingsTab = memo(() => {
             }}
           />
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 });
