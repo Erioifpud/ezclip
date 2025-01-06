@@ -5,6 +5,7 @@ import { useSnapshot } from "valtio"
 import { pluginStore } from "@/store/plugin"
 import { Button } from "@/components/ui/button"
 import { Plugin } from "@/store/plugin"
+import ActionList from "./ActionList"
 
 interface PluginExtra extends Plugin {
   expanded: boolean
@@ -76,11 +77,7 @@ export const PluginTab = memo(() => {
               </div>
 
               {plugin.expanded && (
-                <div className="ec-flex ec-flex-col ec-gap-2">
-                  {plugin.actions.map(action => (
-                    <div key={action.id}>{action.name}</div>
-                  ))}
-                </div>
+                <ActionList actions={plugin.actions} pluginId={plugin.namespace} />
               )}
             </Fragment>
           ))}

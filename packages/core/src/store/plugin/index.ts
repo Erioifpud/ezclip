@@ -3,6 +3,7 @@ import { ActionContext } from "@/lib/createActionContext";
 import { PluginFormField } from "./config";
 import { builtinPlugin } from "./builtin";
 import { parsePlugin } from "@/lib/parsePlugin";
+import { getActionId } from "./utils";
 
 /*
 插件作为“容器”，主要用处是注册 action 和提供基本信息
@@ -75,3 +76,16 @@ export const pluginStore = proxy<PluginStore>({
     return [...this.builtinPlugins, ...this.localPlugins, ...this.remotePlugins];
   },
 });
+
+export const pluginActions = {
+  setActionEnabled(action: Action, state: boolean) {
+    const actionId = getActionId(action);
+    const index = pluginStore.enabledActions.findIndex(item => item === actionId)
+    if (index === -1 && state) {
+      pluginStore.enabledActions = [...pluginStore.enabledActions, actionId]
+      return
+    }
+    pluginStore.enabledActions = pluginStore.enabledActions.filter(item => item !== actionId)
+  }
+}
+
