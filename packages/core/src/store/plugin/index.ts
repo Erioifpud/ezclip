@@ -66,7 +66,7 @@ export const pluginStore = proxy<PluginStore>({
   remotePlugins: [],
   localPlugins: [],
   builtinPlugins: [
-    parsePlugin('builtin', builtinPlugin),
+    parsePlugin('builtin', builtinPlugin, ''),
   ],
   enabledActions: [
     'com.eclip.builtin.builtin.copy',
