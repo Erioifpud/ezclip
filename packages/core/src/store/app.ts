@@ -1,4 +1,6 @@
-import { proxy } from "valtio";
+import { GM_getValue, GM_setValue } from "$";
+import { throttle } from "lodash-es";
+import { proxy, subscribe } from "valtio";
 
 export interface Source {
   name: string;
@@ -22,13 +24,29 @@ export interface AppState {
   cdnRoot: string;
 }
 
-export const appStore = proxy<AppState>({
-  sources: [],
-  blackList: [],
-  theme: 'light',
-  color: 'blue',
-  cdnRoot: 'https://cdn.jsdelivr.net/npm',
-});
+// --------------------------------------------
+
+// 从 GM_getValue 恢复数据
+function hydrateAppStore(): AppState {
+  const data = GM_getValue<AppState>('app_store', {
+    sources: [],
+    blackList: [],
+    theme: 'light',
+    color: 'blue',
+    cdnRoot: 'https://cdn.jsdelivr.net/npm',
+  });
+
+  return data;
+}
+
+export const appStore = proxy<AppState>(hydrateAppStore());
+
+const updateHandler = throttle(() => {
+  GM_setValue('app_store', appStore);
+}, 1000);
+
+// 订阅 store 变更，自动保存数据
+subscribe(appStore, updateHandler);
 
 export const appActions = {
   setColor(color: Color) {
