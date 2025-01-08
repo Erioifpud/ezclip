@@ -1,9 +1,12 @@
-import { proxy } from "valtio";
+import { proxy, subscribe } from "valtio";
 import { ActionContext } from "@/lib/createActionContext";
 import { PluginFormField } from "./config";
 import { builtinPlugin } from "./builtin";
 import { parsePlugin } from "@/lib/parsePlugin";
 import { getActionId } from "./utils";
+import { GM_getValue, GM_setValue } from "$";
+import { createSandbox } from "@/lib/sandbox";
+import { throttle } from "lodash-es";
 
 /*
 插件作为“容器”，主要用处是注册 action 和提供基本信息
@@ -62,20 +65,81 @@ export interface PluginStore {
   installedPlugins: Plugin[];
 }
 
-export const pluginStore = proxy<PluginStore>({
-  remotePlugins: [],
-  localPlugins: [],
-  builtinPlugins: [
+// 持久化的数据结构
+interface PluginStoreData {
+  remotePlugins: {
+    sourceCode: string;
+    namespace: string;
+  }[];
+  localPlugins: {
+    sourceCode: string;
+    namespace: string;
+  }[];
+  enabledActions: string[];
+  pluginSettings: Record<string, Record<string, any>>;
+}
+
+// --------------------------------------------
+
+// 从 GM_getValue 恢复数据
+function hydratePluginStore(): PluginStore {
+  const data = GM_getValue<PluginStoreData>('plugin_store', {
+    remotePlugins: [],
+    localPlugins: [],
+    enabledActions: ['com.eclip.builtin.builtin.copy'],
+    pluginSettings: {},
+  });
+
+  const sandbox = createSandbox();
+
+  // 恢复远程插件
+  const remotePlugins = data.remotePlugins.map(item => {
+    const [exported] = sandbox.run(item.sourceCode || '');
+    return parsePlugin('remote', exported as Plugin, item.sourceCode || '');
+  });
+
+  // 恢复本地插件
+  const localPlugins = data.localPlugins.map(item => {
+    const [exported] = sandbox.run(item.sourceCode || '');
+    return parsePlugin('local', exported as Plugin, item.sourceCode || '');
+  });
+
+  const builtinPlugins = [
     parsePlugin('builtin', builtinPlugin, ''),
-  ],
-  enabledActions: [
-    'com.eclip.builtin.builtin.copy',
-  ],
-  pluginSettings: {},
-  get installedPlugins() {
-    return [...this.builtinPlugins, ...this.localPlugins, ...this.remotePlugins];
-  },
-});
+  ];
+
+  return {
+    remotePlugins,
+    localPlugins,
+    // 不需要持久化
+    builtinPlugins,
+    enabledActions: data.enabledActions,
+    pluginSettings: data.pluginSettings,
+    // 不需要持久化
+    installedPlugins: [...builtinPlugins, ...localPlugins, ...remotePlugins],
+  };
+}
+
+export const pluginStore = proxy<PluginStore>(hydratePluginStore());
+
+const updateHandler = throttle(() => {
+  const data: PluginStoreData = {
+    remotePlugins: pluginStore.remotePlugins.map(plugin => ({
+      sourceCode: plugin._sourceCode!,
+      namespace: plugin.namespace,
+    })),
+    localPlugins: pluginStore.localPlugins.map(plugin => ({
+      sourceCode: plugin._sourceCode!,
+      namespace: plugin.namespace,
+    })),
+    enabledActions: pluginStore.enabledActions,
+    pluginSettings: pluginStore.pluginSettings,
+  };
+  GM_setValue('plugin_store', data);
+}, 1000);
+
+// 订阅 store 变更，自动保存数据
+subscribe(pluginStore, updateHandler);
 
 export const pluginActions = {
   setActionEnabled(action: Action, state: boolean) {
@@ -88,4 +152,3 @@ export const pluginActions = {
     pluginStore.enabledActions = pluginStore.enabledActions.filter(item => item !== actionId)
   }
 }
-
