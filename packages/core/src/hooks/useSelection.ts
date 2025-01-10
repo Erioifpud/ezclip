@@ -15,11 +15,22 @@ export const useSelection = () => {
 
   useEffect(() => {
     const handleSelection = (e: MouseEvent) => {
-      // 如果点击的是 tooltip，则不处理，避免点击按钮时重新显示 tooltip
-      const target = e.target as HTMLElement;
-      if (target.closest('.selection-tooltip')) {
+      const container = document.getElementById('$$ezclip-core-container$$');
+      const shadowRoot = container?.shadowRoot;
+      const root = shadowRoot?.getElementById('$$ezclip-core-root$$');
+      const tooltip = root?.querySelector('.selection-tooltip');
+
+      if (e.composedPath().includes(tooltip as Node)) {
         return;
       }
+
+      // TODO: 补全开发模式的逻辑
+
+      // 如果点击的是 tooltip，则不处理，避免点击按钮时重新显示 tooltip
+      // const target = e.target as HTMLElement;
+      // if (target.closest('.selection-tooltip')) {
+      //   return;
+      // }
 
       // 延迟处理，避免在选区还没消失时松开鼠标再次触发
       setTimeout(() => {
@@ -50,4 +61,4 @@ export const useSelection = () => {
   }, []);
 
   return selectionInfo;
-}; 
+};

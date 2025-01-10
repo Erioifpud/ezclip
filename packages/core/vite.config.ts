@@ -34,6 +34,12 @@ export default defineConfig({
               const shadow = container.attachShadow({ mode: 'open' });
               // 创建一个元素作为 React 的根节点
               const root = document.createElement('div');
+              root.style.position = 'fixed';
+              root.style.top = '0';
+              root.style.left = '0';
+              root.style.width = '0';
+              root.style.height = '0';
+              root.style.overflow = 'visible';
               root.id = '$$ezclip-core-root$$';
               // 创建样式标签
               const style = document.createElement('style');

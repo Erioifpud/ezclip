@@ -11,17 +11,6 @@ export const SelectionTooltip = () => {
   const { visible, position, message } = useSnapshot(tooltipStore);
   const actions = useEnabledActions();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
-        tooltipActions.close();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   if (!visible || !position) return null;
 
   return (

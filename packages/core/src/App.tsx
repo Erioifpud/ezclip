@@ -17,6 +17,9 @@ function App() {
     if (selection) {
       tooltipStore.visible = true;
       tooltipStore.position = selection.position;
+    } else {
+      tooltipStore.visible = false;
+      tooltipStore.position = null;
     }
   }, [selection]);
 
