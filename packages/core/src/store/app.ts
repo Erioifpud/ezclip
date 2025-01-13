@@ -61,4 +61,7 @@ export const appActions = {
   setCDNRoot(cdn: string) {
     appStore.cdnRoot = cdn;
   },
+  addSource(source: Source) {
+    appStore.sources.push(source);
+  },
 }

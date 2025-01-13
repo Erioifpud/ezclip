@@ -1,13 +1,14 @@
 import { AppWindowIcon, CheckIcon, PlusIcon } from "lucide-react"
-import { memo, useEffect, useState } from "react"
+import { memo, useCallback, useEffect, useState } from "react"
 import { TitleBar } from "../components/TitleBar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSnapshot } from "valtio"
-import { appStore } from "@/store/app"
+import { appStore, Source } from "@/store/app"
 import { loadRemotePlugin, PluginMeta } from "@/lib/loadPlugin"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { pluginStore } from "@/store/plugin"
+import { AddSource } from "./AddSource"
 
 function isInstalled(plugin: PluginMeta) {
   const localPlugin = pluginStore.installedPlugins.find(localPlugin => localPlugin.namespace === plugin.id)
@@ -49,11 +50,17 @@ export const CenterTab = memo(() => {
     })
   }, [source])
 
+  const handleAdded = useCallback((src: Source) => {
+    setSource(src.url)
+  }, [])
+
   return (
     <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full">
       {/* 标题栏 */}
       <TitleBar title="插件中心" icon={<AppWindowIcon className="ec-w-4 ec-h-4" />}>
         <div className="ec-flex ec-gap-2 ec-justify-end">
+          {/* 添加应用源 */}
+          <AddSource onAdded={handleAdded} />
           <div className="ec-w-40">
             <Select value={source} onValueChange={setSource}>
               <SelectTrigger>
