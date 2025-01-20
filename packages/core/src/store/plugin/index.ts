@@ -150,5 +150,14 @@ export const pluginActions = {
       return
     }
     pluginStore.enabledActions = pluginStore.enabledActions.filter(item => item !== actionId)
-  }
+  },
+  uninstallPlugin(namespace: string) {
+    // 只影响 remotePlugins
+    // 不用删除配置
+    pluginStore.remotePlugins = pluginStore.remotePlugins.filter(plugin => plugin.namespace !== namespace)
+    pluginStore.enabledActions = pluginStore.enabledActions.filter(item => !item.startsWith(namespace))
+  },
+  savePluginConfig(namespace: string, config: Record<string, any>) {
+    pluginStore.pluginSettings[namespace] = config
+  },
 }

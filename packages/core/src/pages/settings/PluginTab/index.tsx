@@ -1,11 +1,12 @@
-import { SquarePenIcon, PlugIcon, ChevronUpIcon, ChevronDownIcon } from "lucide-react"
+import { PlugIcon, ChevronUpIcon, ChevronDownIcon, TrashIcon } from "lucide-react"
 import { Fragment, memo, useCallback, useEffect, useState } from "react"
 import { TitleBar } from "../components/TitleBar"
 import { useSnapshot } from "valtio"
-import { pluginStore } from "@/store/plugin"
+import { pluginActions, pluginStore } from "@/store/plugin"
 import { Button } from "@/components/ui/button"
 import { Plugin } from "@/store/plugin"
 import ActionList from "./ActionList"
+import { PluginConfig } from "./PluginConfig"
 
 interface PluginExtra extends Plugin {
   expanded: boolean
@@ -64,15 +65,18 @@ export const PluginTab = memo(() => {
                     : <ChevronDownIcon className="ec-w-4 ec-h-4" />}
                 </Button>
                 {/* 编辑按钮 */}
+                <PluginConfig plugin={plugin} />
+                {/* 删除按钮 */}
                 <Button
                   className="ec-border ec-border-transparent ec-flex-shrink-0 ec-ml-2"
-                  variant="default"
+                  variant="destructive"
                   size="sm"
                   onClick={() => {
-                    // TODO: 弹窗显示动态表单
+                    // TODO: 弹窗确认
+                    pluginActions.uninstallPlugin(plugin.namespace)
                   }}
                 >
-                  <SquarePenIcon className="ec-w-4 ec-h-4" />
+                  <TrashIcon className="ec-w-4 ec-h-4" />
                 </Button>
               </div>
 
