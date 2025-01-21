@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Plugin } from "@/store/plugin"
 import ActionList from "./ActionList"
 import { PluginConfig } from "./PluginConfig"
+import { confirmActions } from "@/store/confirm"
 
 interface PluginExtra extends Plugin {
   expanded: boolean
@@ -72,8 +73,14 @@ export const PluginTab = memo(() => {
                   variant="destructive"
                   size="sm"
                   onClick={() => {
-                    // TODO: 弹窗确认
-                    pluginActions.uninstallPlugin(plugin.namespace)
+                    confirmActions.confirm({
+                      title: '确认删除插件',
+                      description: '删除插件后，插件将不再生效',
+                    }).then(res => {
+                      if (res) {
+                        pluginActions.uninstallPlugin(plugin.namespace)
+                      }
+                    })
                   }}
                 >
                   <TrashIcon className="ec-w-4 ec-h-4" />

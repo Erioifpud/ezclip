@@ -9,6 +9,7 @@ import { settingsActions } from './store/settings';
 import { useSnapshot } from 'valtio/react';
 import { appStore } from './store/app';
 import { Toaster } from './components/ui/sonner';
+import { Confirm } from './components/Confirm';
 
 function App() {
   const selection = useSelection();
@@ -56,6 +57,8 @@ function App() {
       <Settings />
       {/* 全局 toast */}
       <Toaster />
+      {/* 确认弹窗 */}
+      <Confirm />
     </div>
   );
 }
