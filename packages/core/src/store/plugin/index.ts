@@ -7,6 +7,8 @@ import { getActionId } from "./utils";
 import { GM_getValue, GM_setValue } from "$";
 import { createSandbox } from "@/lib/sandbox";
 import { throttle } from "lodash-es";
+import { devtools } from 'valtio/utils'
+
 
 /*
 插件作为“容器”，主要用处是注册 action 和提供基本信息
@@ -82,7 +84,7 @@ interface PluginStoreData {
 // --------------------------------------------
 
 // 从 GM_getValue 恢复数据
-function hydratePluginStore(): PluginStore {
+function hydratePluginStore(): Omit<PluginStore, 'installedPlugins'> {
   const data = GM_getValue<PluginStoreData>('plugin_store', {
     remotePlugins: [],
     localPlugins: [],
@@ -115,12 +117,16 @@ function hydratePluginStore(): PluginStore {
     builtinPlugins,
     enabledActions: data.enabledActions,
     pluginSettings: data.pluginSettings,
-    // 不需要持久化
-    installedPlugins: [...builtinPlugins, ...localPlugins, ...remotePlugins],
   };
 }
 
-export const pluginStore = proxy<PluginStore>(hydratePluginStore());
+export const pluginStore = proxy<PluginStore>({
+  ...hydratePluginStore(),
+  // 不需要持久化，不能写在 hydratePluginStore 中，否则没有 getter 效果
+  get installedPlugins() {
+    return [...this.builtinPlugins, ...this.localPlugins, ...this.remotePlugins]
+  },
+});
 
 const updateHandler = throttle(() => {
   const data: PluginStoreData = {
