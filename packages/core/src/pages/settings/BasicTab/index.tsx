@@ -95,8 +95,8 @@ export const SettingsTab = memo(() => {
                   className="ec-flex ec-items-center ec-justify-between ec-border ec-p-2 ec-rounded-lg"
                 >
                   <div className="ec-flex ec-flex-col ec-flex-grow ec-min-w-0">
-                    <span className="ec-font-semibold ec-tracking-tight ec-text-card-foreground ec-truncate">{source.name}</span>
-                    <span className="ec-text-muted-foreground ec-truncate" title={source.url}>{source.url}</span>
+                    <span className="ec-font-semibold ec-tracking-tight ec-text-card-foreground ec-truncate ec-text-sm">{source.name}</span>
+                    <span className="ec-text-muted-foreground ec-font-normal ec-truncate ec-text-xs" title={source.url}>{source.url}</span>
                   </div>
                   <Button
                     className="ec-text-destructive ec-border ec-border-transparent ec-flex-shrink-0 hover:ec-border-destructive hover:ec-text-destructive ec-ml-2"
