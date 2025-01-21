@@ -3,9 +3,19 @@ import { Input } from "@/components/ui/input"
 import { appActions, Source } from "@/store/app"
 import { PlusIcon, X } from "lucide-react"
 import { memo, useCallback, useState } from "react"
+import { toast } from "sonner"
 
 interface Props {
   onAdded: (source: Source) => void
+}
+
+function isValidURL(url: string) {
+  try {
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 export const AddSource = memo<Props>(({ onAdded }) => {
@@ -17,6 +27,12 @@ export const AddSource = memo<Props>(({ onAdded }) => {
     const trimedName = name.trim()
     const trimedSource = source.trim()
     if (!trimedName || !trimedSource) {
+      toast.error('请输入名称和URL')
+      return
+    }
+    // 检查是否是有效的URL
+    if (!isValidURL(trimedSource)) {
+      toast.error('请输入有效的URL')
       return
     }
     appActions.addSource({
@@ -26,6 +42,7 @@ export const AddSource = memo<Props>(({ onAdded }) => {
     setOpen(false)
     setSource('')
     setName('')
+    toast.success('添加成功')
     onAdded({
       name: trimedName,
       url: trimedSource,
