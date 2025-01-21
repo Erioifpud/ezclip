@@ -29,9 +29,9 @@ interface PluginMetaWithInstalled extends PluginMeta {
 
 export const CenterTab = memo(() => {
   const appState = useSnapshot(appStore)
-  const pluginState = useSnapshot(pluginStore)
   const [source, setSource] = useState<string>(appState.sources[0]?.url || '')
   const [metaList, setMetaList] = useState<PluginMetaWithInstalled[]>([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     fetch(source).then(res => res.json()).then(plugins => {
@@ -99,13 +99,16 @@ export const CenterTab = memo(() => {
                 }
                 variant="ghost"
                 size="sm"
-                disabled={meta.installed && !meta.diffVersion}
+                disabled={(meta.installed && !meta.diffVersion) || loading}
                 onClick={() => {
                   // 安装插件
                   // TODO: 先通过 runPluginCodeByMeta(meta) 获取插件的详情，然后弹窗比对信息，如果用户确认，则安装插件
+                  setLoading(true)
                   loadRemotePlugin(meta).then(() => {
                     // 更新状态
                     setMetaList(prev => prev.map(item => item.id === meta.id ? { ...item, installed: true } : item))
+                  }).finally(() => {
+                    setLoading(false)
                   })
                 }}
               >
