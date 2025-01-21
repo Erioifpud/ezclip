@@ -5,7 +5,6 @@ import { memo, useCallback, useState } from "react"
 import { Plugin, pluginActions, pluginStore } from "@/store/plugin"
 import { FormValueType } from "@/store/plugin/config"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSnapshot } from "valtio"
 import { initPluginConfig } from "@/store/plugin/utils"
 import { deepClone } from "@/lib/utils"
@@ -167,19 +166,15 @@ export const PluginConfig = memo<Props>(({ plugin }) => {
                       )}
                       {/* 下拉选择框 */}
                       {type === 'select' && (
-                        <Select
+                        <select
+                          className="ec-w-full ec-border ec-border-input ec-rounded-lg ec-p-2 ec-text-sm focus:ec-outline-primary"
                           value={formValue[name] as string}
-                          onValueChange={(value) => setFormValue({ ...formValue, [name]: value })}
+                          onChange={(e) => setFormValue({ ...formValue, [name]: e.target.value })}
                         >
-                          <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder={item.props?.placeholder} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {item.options.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          {item.options.map((option) => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                          ))}
+                        </select>
                       )}
                       {/* 数字输入框 */}
                       {type === 'number' && (

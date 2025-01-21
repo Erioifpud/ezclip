@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { appActions, appStore, Color } from "@/store/app";
@@ -122,25 +121,15 @@ export const SettingsTab = memo(() => {
         {/* CDN 选择 */}
         <div className="ec-space-y-1.5 ec-mt-4">
           <Label className="ec-text-md">CDN 选择</Label>
-          <Select
+          <select
+            className="ec-w-full ec-border ec-border-input ec-rounded-lg ec-p-2 ec-text-sm focus:ec-outline-primary"
             value={appState.cdnRoot}
-            onValueChange={value => {
-              appActions.setCDNRoot(value);
-            }}
+            onChange={(e) => appActions.setCDNRoot(e.target.value)}
           >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="选择 CDN 源" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {CDN_LIST.map(item => {
-                  return (
-                    <SelectItem key={item.value} value={item.value}>{item.name}</SelectItem>
-                  )
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            {CDN_LIST.map(item => (
+              <option key={item.value} value={item.value}>{item.name}</option>
+            ))}
+          </select>
         </div>
 
         {/* 网站黑名单 */}

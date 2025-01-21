@@ -1,7 +1,6 @@
 import { AppWindowIcon, CheckIcon, PlusIcon } from "lucide-react"
 import { memo, useCallback, useEffect, useState } from "react"
 import { TitleBar } from "../components/TitleBar"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSnapshot } from "valtio"
 import { appStore, Source } from "@/store/app"
 import { loadRemotePlugin, PluginMeta } from "@/lib/loadPlugin"
@@ -62,18 +61,15 @@ export const CenterTab = memo(() => {
           {/* 添加应用源 */}
           <AddSource onAdded={handleAdded} />
           <div className="ec-w-40">
-            <Select value={source} onValueChange={setSource}>
-              <SelectTrigger>
-                <SelectValue placeholder="选择应用源" />
-              </SelectTrigger>
-              <SelectContent>
-                {appState.sources.map((source) => (
-                  <SelectItem key={source.name} value={source.url}>
-                    {source.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <select
+              className="ec-w-full ec-border ec-border-input ec-rounded-lg ec-p-2 ec-text-sm focus:ec-outline-primary"
+              value={source}
+              onChange={(e) => setSource(e.target.value)}
+            >
+              {appState.sources.map((source) => (
+                <option key={source.name} value={source.url}>{source.name}</option>
+              ))}
+            </select>
           </div>
         </div>
       </TitleBar>
