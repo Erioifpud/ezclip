@@ -11,6 +11,7 @@ import { initPluginConfig } from "@/store/plugin/utils"
 import { deepClone } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
+import { toast } from "sonner"
 
 interface Props {
   plugin: Plugin
@@ -93,7 +94,7 @@ export const PluginConfig = memo<Props>(({ plugin }) => {
     if (doValidate()) {
       pluginActions.savePluginConfig(plugin.namespace, formValue)
       setOpen(false)
-      // TODO: 提示
+      toast.success('保存成功')
     }
   }, [formValue, doValidate])
 

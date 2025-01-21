@@ -8,6 +8,7 @@ import { SettingsIcon } from 'lucide-react';
 import { settingsActions } from './store/settings';
 import { useSnapshot } from 'valtio/react';
 import { appStore } from './store/app';
+import { Toaster } from './components/ui/sonner';
 
 function App() {
   const selection = useSelection();
@@ -53,6 +54,8 @@ function App() {
       </div>
       {/* 设置弹窗 */}
       <Settings />
+      {/* 全局 toast */}
+      <Toaster />
     </div>
   );
 }
