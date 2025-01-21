@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
+import 'sonner/dist/styles.css';
 
 // 创建一个函数来获取挂载点
 const getMountPoint = () => {
