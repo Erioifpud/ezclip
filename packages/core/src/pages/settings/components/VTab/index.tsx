@@ -1,5 +1,5 @@
 import { settingsActions, settingsStore, SettingsTab } from "@/store/settings";
-import { AppWindowIcon, BugIcon, InfoIcon, PlugIcon, SettingsIcon } from "lucide-react";
+import { AppWindowIcon, BugIcon, InfoIcon, PlugIcon, SettingsIcon, XIcon } from "lucide-react";
 import { memo } from "react";
 import { useSnapshot } from "valtio/react";
 
@@ -54,6 +54,17 @@ export const VTab = memo(() => {
           </div>
         </div>
       ))}
+      <div className="ec-flex-1"></div>
+      <div
+        className="ec-flex ec-items-center ec-w-fit ec-h-10 ec-bg-gray-100 ec-rounded-lg ec-cursor-pointer ec-hover:ec-bg-gray-200"
+        onClick={() => {
+          settingsActions.closeSettings();
+        }}
+      >
+        <div className="ec-text-sm ec-flex ec-items-center ec-gap-2 ec-px-3">
+          <XIcon className="ec-w-4 ec-h-4" />
+        </div>
+      </div>
     </div>
   )
 });

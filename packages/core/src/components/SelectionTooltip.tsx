@@ -5,6 +5,7 @@ import { useEnabledActions } from '@/hooks/useEnabledActions';
 import { createActionContext } from '@/lib/createActionContext';
 import { SettingsIcon } from 'lucide-react';
 import { getActionId } from '@/store/plugin/utils';
+import { settingsActions } from '@/store/settings';
 
 export const SelectionTooltip = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -59,6 +60,9 @@ export const SelectionTooltip = () => {
         {/* 设置 */}
         <button
           className="ec-px-3 ec-py-1 ec-bg-primary ec-text-primary-foreground ec-rounded ec-hover:ec-bg-primary/80"
+          onClick={() => {
+            settingsActions.openSettings();
+          }}
         >
           <SettingsIcon className="ec-w-4 ec-h-4" />
         </button>

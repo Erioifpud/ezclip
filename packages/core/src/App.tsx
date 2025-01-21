@@ -10,6 +10,7 @@ import { useSnapshot } from 'valtio/react';
 import { appStore } from './store/app';
 import { Toaster } from './components/ui/sonner';
 import { Confirm } from './components/Confirm';
+import { isValidSettingPage } from './lib/utils';
 
 function App() {
   const selection = useSelection();
@@ -45,14 +46,16 @@ function App() {
     >
       <SelectionTooltip />
       {/* 设置触发按钮 */}
-      <div
-        onClick={() => {
-          settingsActions.toggleSettings();
-        }}
-        className="ec-fixed ec-bottom-4 ec-left-4 ec-z-50 ec-p-4 ec-rounded-full ec-bg-white ec-border ec-border-gray-200 ec-shadow-lg ec-cursor-pointer"
-      >
-        <SettingsIcon className="ec-w-4 ec-h-4" />
-      </div>
+      {isValidSettingPage() && (
+        <div
+          onClick={() => {
+            settingsActions.toggleSettings();
+          }}
+          className="ec-fixed ec-bottom-4 ec-left-4 ec-z-50 ec-p-4 ec-rounded-full ec-bg-white ec-border ec-border-gray-200 ec-shadow-lg ec-cursor-pointer"
+        >
+          <SettingsIcon className="ec-w-4 ec-h-4" />
+        </div>
+      )}
       {/* 设置弹窗 */}
       <Settings />
       {/* 全局 toast */}
