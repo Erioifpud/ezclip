@@ -21,7 +21,7 @@ export interface Action {
   icon: string;        // 动作图标
   description?: string;// 动作描述
   // 判断是否显示此动作按钮
-  shouldShow?: (text: string) => boolean;
+  shouldShow?: (text: string, url: string) => boolean;
   execute: (context: ActionContext) => void | Promise<void>;
   primaryColor?: string;
   secondaryColor?: string;

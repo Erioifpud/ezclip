@@ -27,7 +27,8 @@ export const SelectionTooltip = () => {
       <div className="ec-flex ec-gap-2">
         {actions.map(action => {
           // 根据 action 自己的 shouldShow 函数判断是否显示
-          const shouldShowFlag = action.shouldShow?.(message || '') ?? true;
+          const currentUrl = window.location.href;
+          const shouldShowFlag = action.shouldShow?.(message || '', currentUrl) ?? true;
           if (!shouldShowFlag) {
             return null;
           }
