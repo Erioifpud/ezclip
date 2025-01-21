@@ -99,7 +99,7 @@ export const CenterTab = memo(() => {
                 }
                 variant="ghost"
                 size="sm"
-                disabled={meta.installed}
+                disabled={meta.installed && !meta.diffVersion}
                 onClick={() => {
                   // 安装插件
                   // TODO: 先通过 runPluginCodeByMeta(meta) 获取插件的详情，然后弹窗比对信息，如果用户确认，则安装插件

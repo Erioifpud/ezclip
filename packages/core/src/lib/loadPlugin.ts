@@ -114,6 +114,7 @@ export async function loadRemotePlugin(meta: PluginMeta) {
     }
 
     const diff = diffPlugin(plugin);
+    // TODO: 处理插件更新的情况
     if (diff.existed) {
       throw new Error('Plugin already exists');
     }
