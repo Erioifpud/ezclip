@@ -3,11 +3,14 @@ import { memo, useCallback, useEffect, useState } from "react"
 import { TitleBar } from "../components/TitleBar"
 import { useSnapshot } from "valtio"
 import { appStore, Source } from "@/store/app"
-import { loadRemotePlugin, PluginMeta } from "@/lib/loadPlugin"
+import { installRemotePlugin, PluginMeta } from "@/lib/loadPlugin"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { pluginStore } from "@/store/plugin"
 import { AddSource } from "./AddSource"
+import { PluginMetaWithInstalled } from "./type"
+import { InstallDialog } from "./InstallDialog"
+import { Plugin } from "@/store/plugin"
 
 function isInstalled(plugin: PluginMeta) {
   const localPlugin = pluginStore.installedPlugins.find(localPlugin => localPlugin.namespace === plugin.id)
@@ -19,19 +22,15 @@ function isInstalled(plugin: PluginMeta) {
   }
 }
 
-interface PluginMetaWithInstalled extends PluginMeta {
-  installed: boolean;
-  // 新插件比当前插件版本高
-  diffVersion: boolean;
-  remoteVersion: string;
-  localVersion: string;
-}
-
+/*
+这个面板只是展示插件的元数据，安装的步骤在 InstallDialog 里面，包括运行插件代码得到 Plugin
+确认安装后，子组件会将 Plugin 传递到这里，通过 installRemotePlugin 安装
+*/
 export const CenterTab = memo(() => {
   const appState = useSnapshot(appStore)
   const [source, setSource] = useState<string>(appState.sources[0]?.url || '')
   const [metaList, setMetaList] = useState<PluginMetaWithInstalled[]>([])
-  const [loading, setLoading] = useState(false)
+  const [installInfo, setInstallInfo] = useState<PluginMetaWithInstalled | null>(null)
 
   useEffect(() => {
     fetch(source).then(res => res.json()).then(plugins => {
@@ -51,6 +50,13 @@ export const CenterTab = memo(() => {
 
   const handleAdded = useCallback((src: Source) => {
     setSource(src.url)
+  }, [])
+
+  const handleInstall = useCallback((plugin: Plugin) => {
+    installRemotePlugin(plugin)
+    setInstallInfo(null)
+    // 更新状态
+    setMetaList(prev => prev.map(item => item.id === plugin.namespace ? { ...item, installed: true, diffVersion: false } : item))
   }, [])
 
   return (
@@ -99,17 +105,10 @@ export const CenterTab = memo(() => {
                 }
                 variant="ghost"
                 size="sm"
-                disabled={(meta.installed && !meta.diffVersion) || loading}
+                disabled={meta.installed && !meta.diffVersion}
                 onClick={() => {
-                  // 安装插件
-                  // TODO: 先通过 runPluginCodeByMeta(meta) 获取插件的详情，然后弹窗比对信息，如果用户确认，则安装插件
-                  setLoading(true)
-                  loadRemotePlugin(meta).then(() => {
-                    // 更新状态
-                    setMetaList(prev => prev.map(item => item.id === meta.id ? { ...item, installed: true } : item))
-                  }).finally(() => {
-                    setLoading(false)
-                  })
+                  // 到现在只是获取了插件的元数据，还没有执行插件的代码
+                  setInstallInfo(meta)
                 }}
               >
                 {
@@ -133,6 +132,13 @@ export const CenterTab = memo(() => {
           ))}
         </div>
       </div>
+      {installInfo && (
+        <InstallDialog
+          meta={installInfo}
+          onClose={() => setInstallInfo(null)}
+          onInstall={handleInstall}
+        />
+      )}
     </div>
   )
 })

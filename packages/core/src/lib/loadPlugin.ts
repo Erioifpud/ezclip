@@ -58,6 +58,7 @@ export function diffPlugin(plugin: Plugin): DiffPluginResult {
   }
 }
 
+// 通过元数据获取插件的代码并执行
 export async function runPluginCodeByMeta(meta: PluginMeta) {
   try {
     // 1. 获取完整的插件URL
@@ -78,56 +79,32 @@ export async function runPluginCodeByMeta(meta: PluginMeta) {
       throw new Error('Invalid plugin format');
     }
 
-    return exported;
+    // 4. 解析插件
+    const parsedPlugin = parsePlugin('remote', exported as Plugin, code);
+
+    return parsedPlugin;
   } catch (error) {
     console.error('Failed to load plugin:', error);
     throw error;
   }
 }
 
-export async function loadRemotePlugin(meta: PluginMeta) {
-  try {
-    // 1. 获取完整的插件URL
-    const fullPath = getPluginUrl(meta.entry);
-
-    // 2. 获取插件代码
-    const response = await fetch(fullPath);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch plugin: ${response.statusText}`);
-    }
-    const code = await response.text();
-
-    // 3. 在沙箱中执行代码
-    const sandbox = createSandbox();
-    const [exported] = sandbox.run(code);
-
-    if (!exported || typeof exported !== 'object') {
-      throw new Error('Invalid plugin format');
-    }
-
-    // 4. 解析插件并添加到 store
-    const plugin = parsePlugin('remote', exported as Plugin, code);
-
-    // 5. 验证插件 ID 是否匹配
-    if (plugin.namespace !== meta.id) {
-      throw new Error('Plugin ID mismatch');
-    }
-
-    const diff = diffPlugin(plugin);
-    // TODO: 处理插件更新的情况
-    if (diff.existed) {
-      throw new Error('Plugin already exists');
-    }
-
-    // 6. 添加到 store
-    pluginStore.remotePlugins = [...pluginStore.remotePlugins, plugin];
-    pluginStore.enabledActions = [...pluginStore.enabledActions, ...plugin.actions.map(action => getActionId(action))];
-
-    return plugin;
-  } catch (error) {
-    console.error('Failed to load plugin:', error);
-    throw error;
+// 覆盖安装远程插件
+export function installRemotePlugin(plugin: Plugin) {
+  // 这里的 plugin 是已经解析过的插件，已经包含 _sourceCode
+  if (!plugin._sourceCode) {
+    throw new Error('Plugin source code is not available');
   }
+  const remotePlugins = [...pluginStore.remotePlugins];
+  const enabledActions = [...pluginStore.enabledActions];
+  const isExisted = remotePlugins.findIndex(p => p.namespace === plugin.namespace);
+  if (isExisted >= 0) {
+    remotePlugins.splice(isExisted, 1);
+    enabledActions.splice(isExisted, 1);
+  }
+  pluginStore.remotePlugins = [...remotePlugins, plugin];
+  // 默认启用新插件的所有 action
+  pluginStore.enabledActions = [...enabledActions, ...plugin.actions.map(action => getActionId(action))];
 }
 
 export async function loadLocalPlugin(code: string) {
