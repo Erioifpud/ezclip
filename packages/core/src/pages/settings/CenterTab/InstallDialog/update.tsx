@@ -10,7 +10,6 @@ interface Props {
 
 export const UpdatePlugin = memo((props: Props) => {
   const { existedPlugin, newPlugin, onSubmit } = props
-  console.log(existedPlugin, newPlugin)
 
   // 这个组件里面需要对比两个插件的差异，然后展示出来
   // 和 install 不一样，这里只展示差异，不展示具体的信息
