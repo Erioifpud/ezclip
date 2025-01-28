@@ -89,6 +89,31 @@ export async function runPluginCodeByMeta(meta: PluginMeta) {
   }
 }
 
+function doDataMigrate(existed: Plugin, remote: Plugin) {
+  // 数据迁移
+  const localVersion = existed.version.data;
+  const remoteVersion = remote.version.data;
+  if (localVersion < remoteVersion) {
+    // 远程插件版本较新
+    // 版本号差距
+    const versions = Array.from(
+      { length: remoteVersion - localVersion },
+      (_, i) => localVersion + i + 1
+    );
+    // 本地配置
+    const config = pluginStore.pluginSettings[remote.namespace] || {};
+    // 逐版本升级
+    versions.forEach(version => {
+      const migrate = remote.migrates[version];
+      if (typeof migrate === 'function') {
+        // 执行迁移并更新配置
+        const newConfig = migrate(config) || {};
+        pluginStore.pluginSettings[remote.namespace] = newConfig;
+      }
+    });
+  }
+}
+
 // 覆盖安装远程插件
 export function installRemotePlugin(plugin: Plugin) {
   // 这里的 plugin 是已经解析过的插件，已经包含 _sourceCode
@@ -99,6 +124,10 @@ export function installRemotePlugin(plugin: Plugin) {
   const enabledActions = [...pluginStore.enabledActions];
   const isExisted = remotePlugins.findIndex(p => p.namespace === plugin.namespace);
   if (isExisted >= 0) {
+    // 更新时的数据迁移
+    const existedPlugin = remotePlugins[isExisted];
+    doDataMigrate(existedPlugin, plugin);
+
     remotePlugins.splice(isExisted, 1);
     enabledActions.splice(isExisted, 1);
   }
