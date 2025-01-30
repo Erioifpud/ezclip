@@ -1,7 +1,7 @@
 import { useSelection } from './hooks/useSelection';
 import { SelectionTooltip } from './components/SelectionTooltip';
 import { useEffect, useMemo } from 'react';
-import { tooltipStore } from './store/tooltip';
+import { tooltipActions } from './store/tooltip';
 import { baseColors } from './style/registry-base-colors';
 import { Settings } from './pages/settings';
 import { SettingsIcon } from 'lucide-react';
@@ -18,11 +18,9 @@ function App() {
 
   useEffect(() => {
     if (selection) {
-      tooltipStore.visible = true;
-      tooltipStore.position = selection.position;
+      tooltipActions.init(selection);
     } else {
-      tooltipStore.visible = false;
-      tooltipStore.position = null;
+      tooltipActions.close();
     }
   }, [selection]);
 

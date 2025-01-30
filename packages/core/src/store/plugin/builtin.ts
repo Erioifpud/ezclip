@@ -18,8 +18,8 @@ export const builtinPlugin: Plugin = {
       icon: '📋',
       description: '复制选中的文本',
       execute: async (ctx) => {
-        await ctx.utils.clipboard?.writeText(ctx.selection.text);
-        ctx.tooltip.showMessage('已复制到剪贴板');
+        await ctx.utils.clipboard?.write(ctx.selection.text);
+        ctx.tooltip.toast.success('已复制到剪贴板');
         ctx.tooltip.close();
       }
     }

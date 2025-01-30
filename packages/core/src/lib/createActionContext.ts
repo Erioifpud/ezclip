@@ -1,14 +1,23 @@
 import { reduce } from 'lodash-es';
 import { tooltipActions } from '../store/tooltip';
-import { Plugin } from '@/store/plugin';
-import { unsafeWindow } from '$';
+import { Action, Plugin } from '@/store/plugin';
+import { GM, GM_download } from '$';
+import { toast } from 'sonner';
+import { getActionId } from '@/store/plugin/utils';
 
 export type UtilsMap = {
-  storage: Storage;
-  http: typeof fetch;
-  clipboard: {
-    writeText: (text: string) => Promise<void>;
+  storage: (plugin: Plugin) => {
+    getItem: (key: string, defaultValue: string) => Promise<string>;
+    setItem: (key: string, value: string) => Promise<void>;
+    removeItem: (key: string) => Promise<void>;
   };
+  fetch: typeof fetch;
+  xhr: typeof GM.xmlHttpRequest;
+  clipboard: {
+    write: (text: string, type?: string) => void;
+  };
+  download: typeof GM_download;
+  open: typeof GM.openInTab;
 };
 
 export interface SelectionInfo {
@@ -17,11 +26,21 @@ export interface SelectionInfo {
 }
 
 export interface ActionContext {
+  meta: {
+    namespace: string;
+    version: {
+      data: number;
+      plugin: string;
+    }
+  };
   selection: SelectionInfo;
   tooltip: {
+    toast: typeof toast;
     close: () => void;
-    showMessage: (message: string) => void;
     setLoading: (loading: boolean) => void;
+    showMessage: (message: string) => void;
+    setError: () => void;
+    resetStatus: () => void;
   };
   config: {
     get: (key: string) => string | null;
@@ -36,20 +55,39 @@ export interface ActionContext {
   version: number;
 }
 
-const allUtils: UtilsMap = {
-  storage: localStorage,
-  http: fetch,
-  clipboard: {
-    writeText: (text: string) => {
-      return new Promise((resolve) => {
-        unsafeWindow.document.execCommand('copy', false, text);
-        resolve();
-      });
-    },
-  },
-} as const;
+const getStorageKey = (namespace: string, key: string) => {
+  return `${namespace}-${key}`;
+}
 
-const getUtils = (permissions: string[]) => {
+const getFullUtils = (plugin: Plugin) => {
+  const { namespace } = plugin;
+  return {
+    storage: {
+      getItem: (key: string, defaultValue: string) => {
+        return GM.getValue(getStorageKey(namespace, key), defaultValue);
+      },
+      setItem: (key: string, value: string) => {
+        return GM.setValue(getStorageKey(namespace, key), value);
+      },
+      removeItem: (key: string) => {
+        return GM.deleteValue(getStorageKey(namespace, key));
+      },
+    },
+    fetch,
+    xhr: GM.xmlHttpRequest,
+    download: GM_download,
+    clipboard: {
+      write: (text: string, type = 'text/plain') => {
+        GM.setClipboard(text, type);
+      },
+    },
+    open: GM.openInTab,
+  } as const;
+}
+
+const getUtils = (plugin: Plugin) => {
+  const { permissions } = plugin;
+  const allUtils = getFullUtils(plugin);
   const formatedPermissions = permissions.map(permission => permission as keyof UtilsMap);
   return reduce<keyof UtilsMap, Partial<UtilsMap>>(
     formatedPermissions,
@@ -64,18 +102,34 @@ const getUtils = (permissions: string[]) => {
   );
 };
 
-export const createActionContext = (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>, selection: SelectionInfo, plugin: Plugin): ActionContext => {
-  const { permissions } = plugin;
-  const utils = getUtils(permissions);
+export const createActionContext = (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>, selection: SelectionInfo, action: Action): ActionContext => {
+  const actionId = getActionId(action);
+  const plugin = action._plugin!;
+  const utils = getUtils(plugin);
   return {
+    meta: {
+      namespace: plugin.namespace,
+      version: plugin.version,
+    },
     selection: {
       text: selection.text,
       position: selection.position,
     },
     tooltip: {
+      toast,
       close: tooltipActions.close,
-      showMessage: tooltipActions.showMessage,
-      setLoading: tooltipActions.setLoading,
+      setLoading: (loading: boolean) => {
+        tooltipActions.setLoading(actionId, loading);
+      },
+      showMessage: (message: string) => {
+        tooltipActions.showMessage(actionId, message);
+      },
+      setError: () => {
+        tooltipActions.setError(actionId);
+      },
+      resetStatus: () => {
+        tooltipActions.resetStatus(actionId);
+      },
     },
     config: {
       get: (key: string) => localStorage.getItem(key),
