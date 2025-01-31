@@ -33,15 +33,21 @@ export const SelectionTooltip = memo(() => {
   const { visible, position, text, feedbackMap, statusMap } = useSnapshot(tooltipStore);
   const actions = useEnabledActions();
 
-  if (!visible || !position) return null;
+  // if (!visible || !position) return null;
 
   return (
     <div
       ref={tooltipRef}
-      className="selection-tooltip ec-overflow-x-hidden ec-fixed ec-z-50 ec-bg-zinc-800 ec-h-7 ec-rounded-lg ec-shadow-lg ec-flex ec-items-center ec-bg-opacity-95"
+      className={
+        cn(
+          'selection-tooltip ec-overflow-x-hidden ec-fixed ec-z-50 ec-bg-zinc-800 ec-h-7 ec-rounded-lg ec-shadow-lg ec-flex ec-items-center ec-bg-opacity-95',
+          'ec-transition-opacity ec-duration-300',
+          visible ? 'ec-opacity-100' : 'ec-opacity-0',
+        )
+      }
       style={{
-        left: position.x,
-        top: position.y - 10,
+        left: position?.x ?? 0,
+        top: (position?.y ?? 0) - 10,
         transform: 'translate(-50%, -100%)'
       }}
     >
@@ -58,7 +64,7 @@ export const SelectionTooltip = memo(() => {
                 action.execute(
                   createActionContext(ev, {
                     text: text || '',
-                    position: position,
+                    position: position ?? { x: 0, y: 0 },
                   }, action)
                 );
               }}
