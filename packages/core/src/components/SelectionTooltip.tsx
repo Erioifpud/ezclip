@@ -7,6 +7,7 @@ import { CircleXIcon, Loader2Icon, SettingsIcon } from 'lucide-react';
 import { getActionId } from '@/store/plugin/utils';
 import { settingsActions } from '@/store/settings';
 import { Action } from '@/store/plugin';
+import { cn } from '@/lib/utils';
 
 interface ButtonChildProps {
   action: Action;
@@ -61,7 +62,17 @@ export const SelectionTooltip = memo(() => {
                   }, action)
                 );
               }}
-              className="ec-px-3 ec-h-full ec-text-sm ec-text-white hover:ec-bg-blue-500 ec-transition-colors ec-flex ec-items-center ec-justify-center"
+              className={
+                cn(
+                  'ec-px-3 ec-h-full ec-text-sm ec-text-[--hover-text-color]  ec-transition-colors ec-flex ec-items-center ec-justify-center',
+                  action.primaryColor ? 'hover:ec-bg-[--hover-bg-color]' : 'hover:ec-bg-primary',
+                  action.secondaryColor ? 'hover:ec-text-[--hover-text-color]' : 'hover:ec-text-primary-foreground'
+                )
+              }
+              style={{
+                ['--hover-bg-color' as string]: action.primaryColor,
+                ['--hover-text-color' as string]: action.secondaryColor,
+              }}
             >
               <ButtonChild
                 action={action}
@@ -74,7 +85,7 @@ export const SelectionTooltip = memo(() => {
       })}
 
       <button
-        className="ec-px-3 ec-h-full ec-text-sm ec-text-white hover:ec-bg-blue-500 ec-transition-colors"
+        className="ec-px-3 ec-h-full ec-text-sm ec-text-primary-foreground hover:ec-bg-primary ec-transition-colors"
         onClick={() => {
           settingsActions.openSettings();
         }}
