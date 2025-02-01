@@ -11,6 +11,7 @@ import { AddSource } from "./AddSource"
 import { PluginMetaWithInstalled } from "./type"
 import { InstallDialog } from "./InstallDialog"
 import { Plugin } from "@/store/plugin"
+import { toast } from "sonner"
 
 function isInstalled(plugin: PluginMeta) {
   const localPlugin = pluginStore.installedPlugins.find(localPlugin => localPlugin.namespace === plugin.id)
@@ -45,6 +46,8 @@ export const CenterTab = memo(() => {
         }
       })
       setMetaList(metaList)
+    }).catch(err => {
+      toast.error(`加载应用源 ${source} 失败`)
     })
   }, [source])
 
