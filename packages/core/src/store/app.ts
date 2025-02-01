@@ -62,6 +62,10 @@ export const appActions = {
     appStore.cdnRoot = cdn;
   },
   addSource(source: Source) {
+    if (appStore.sources.find(s => s.url === source.url)) {
+      return false
+    }
     appStore.sources.push(source);
+    return true
   },
 }

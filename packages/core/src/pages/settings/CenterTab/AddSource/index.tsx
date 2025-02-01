@@ -35,10 +35,14 @@ export const AddSource = memo<Props>(({ onAdded }) => {
       toast.error('请输入有效的URL')
       return
     }
-    appActions.addSource({
+    const success = appActions.addSource({
       name: trimedName,
       url: trimedSource,
     })
+    if (!success) {
+      toast.error('该应用源已存在')
+      return
+    }
     setOpen(false)
     setSource('')
     setName('')
