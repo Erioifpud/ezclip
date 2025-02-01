@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface SelectionPosition {
   x: number;
@@ -10,8 +10,30 @@ interface SelectionInfo {
   position: SelectionPosition;
 }
 
+interface PartialSelection {
+  anchorNode: Node | null;
+  anchorOffset: number;
+  focusNode: Node | null;
+  focusOffset: number;
+  direction: string;
+}
+
+const isSameSelection = (selection1: PartialSelection | null, selection2: PartialSelection | null) => {
+  if (!selection1 || !selection2) {
+    return false
+  }
+  return (
+    selection1.anchorNode === selection2.anchorNode
+    && selection1.anchorOffset === selection2.anchorOffset
+    && selection1.focusNode === selection2.focusNode
+    && selection1.focusOffset === selection2.focusOffset
+    && selection1.direction === selection2.direction
+  )
+}
+
 export const useSelection = () => {
   const [selectionInfo, setSelectionInfo] = useState<SelectionInfo | null>(null);
+  const lastSelectionInfo = useRef<PartialSelection | null>(null);
 
   useEffect(() => {
     const handleSelection = (e: MouseEvent) => {
@@ -35,27 +57,40 @@ export const useSelection = () => {
         }
       }
 
-      // 延迟处理，避免在选区还没消失时松开鼠标再次触发
+      // 延迟处理，避免点到外部选区消失，但弹窗未消失的情况
       setTimeout(() => {
         const selection = window.getSelection();
         if (!selection || selection.isCollapsed) {
           setSelectionInfo(null);
+          lastSelectionInfo.current = null;
           return;
         }
 
         const text = selection.toString().trim();
         if (!text) {
           setSelectionInfo(null);
+          lastSelectionInfo.current = null;
           return;
         }
 
-        setSelectionInfo({
-          text,
-          position: {
-            x: e.pageX,
-            y: e.pageY
+        // 和上一次的选区进行比对，避免“不影响选区的点击（比如点击文档流外的元素）”更新弹窗位置
+        if (!isSameSelection(lastSelectionInfo.current, selection)) {
+          setSelectionInfo({
+            text,
+            position: {
+              x: e.pageX,
+              y: e.pageY
+            }
+          });
+          // window.getSelection 似乎会复用同一个对象
+          lastSelectionInfo.current = {
+            anchorNode: selection.anchorNode,
+            anchorOffset: selection.anchorOffset,
+            focusNode: selection.focusNode,
+            focusOffset: selection.focusOffset,
+            direction: selection.direction,
           }
-        });
+        }
       }, 0);
     };
 
