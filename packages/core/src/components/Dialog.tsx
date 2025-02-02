@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { cloneElement, memo, useState } from "react";
+import { cloneElement, memo, useImperativeHandle, useState } from "react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 
@@ -8,10 +8,19 @@ interface Props {
   title: string;
   children: React.ReactNode;
   className?: string;
+  dialogRef?: React.RefObject<{
+    open: () => void;
+    close: () => void;
+  }>;
 }
 
 export const Dialog = memo((props: Props) => {
   const [open, setOpen] = useState(false)
+
+  useImperativeHandle(props.dialogRef, () => ({
+    open: () => setOpen(true),
+    close: () => setOpen(false),
+  }))
 
   return (
     <>
