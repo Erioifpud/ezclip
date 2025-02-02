@@ -114,40 +114,45 @@ function doDataMigrate(existed: Plugin, remote: Plugin) {
   }
 }
 
-// 覆盖安装远程插件
-export function installRemotePlugin(plugin: Plugin) {
+export function installPlugin(plugin: Plugin, source: 'remote' | 'local') {
   // 这里的 plugin 是已经解析过的插件，已经包含 _sourceCode
   if (!plugin._sourceCode) {
     throw new Error('Plugin source code is not available');
   }
-  const remotePlugins = [...pluginStore.remotePlugins];
+  const isRemote = source === 'remote';
+  const pluginKey = isRemote ? 'remotePlugins' : 'localPlugins';
+  const pluginList = [...pluginStore[pluginKey]];
   const enabledActions = [...pluginStore.enabledActions];
-  const isExisted = remotePlugins.findIndex(p => p.namespace === plugin.namespace);
+  const isExisted = pluginList.findIndex(p => p.namespace === plugin.namespace);
   if (isExisted >= 0) {
     // 更新时的数据迁移
-    const existedPlugin = remotePlugins[isExisted];
+    const existedPlugin = pluginList[isExisted];
     doDataMigrate(existedPlugin, plugin);
 
-    remotePlugins.splice(isExisted, 1);
+    pluginList.splice(isExisted, 1);
     enabledActions.splice(isExisted, 1);
   }
-  pluginStore.remotePlugins = [...remotePlugins, plugin];
+  pluginStore[pluginKey] = [...pluginList, plugin];
   // 默认启用新插件的所有 action
   pluginStore.enabledActions = [...enabledActions, ...plugin.actions.map(action => getActionId(action))];
 }
 
+// 覆盖安装远程插件
+export function installRemotePlugin(plugin: Plugin) {
+  installPlugin(plugin, 'remote');
+}
+
+// 覆盖安装本地插件
+export function installLocalPlugin(plugin: Plugin) {
+  installPlugin(plugin, 'local');
+}
+
+// 加载本地代码为插件
 export async function loadLocalPlugin(code: string) {
   const sandbox = createSandbox();
   const [exported] = sandbox.run(code);
   if (!exported || typeof exported !== 'object') {
     throw new Error('Invalid plugin format');
   }
-  const plugin = parsePlugin('local', exported as Plugin, code);
-  const diff = diffPlugin(plugin);
-  if (diff.existed) {
-    throw new Error('Plugin already exists');
-  }
-  pluginStore.localPlugins = [...pluginStore.localPlugins, plugin];
-  pluginStore.enabledActions = [...pluginStore.enabledActions, ...plugin.actions.map(action => getActionId(action))];
-  return plugin;
+  return parsePlugin('local', exported as Plugin, code);
 }
