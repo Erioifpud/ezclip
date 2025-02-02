@@ -70,7 +70,7 @@ export const SelectionTooltip = memo(() => {
               }}
               className={
                 cn(
-                  'ec-px-3 ec-h-full ec-text-sm ec-text-[--hover-text-color]  ec-transition-colors ec-flex ec-items-center ec-justify-center',
+                  'ec-px-3 ec-h-full ec-text-sm ec-text-primary-foreground ec-transition-colors ec-flex ec-items-center ec-justify-center',
                   action.primaryColor ? 'hover:ec-bg-[--hover-bg-color]' : 'hover:ec-bg-primary',
                   action.secondaryColor ? 'hover:ec-text-[--hover-text-color]' : 'hover:ec-text-primary-foreground'
                 )
