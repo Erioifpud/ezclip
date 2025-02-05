@@ -1,4 +1,4 @@
-import { PlugIcon, ChevronUpIcon, ChevronDownIcon, TrashIcon } from "lucide-react"
+import { PlugIcon, ChevronUpIcon, ChevronDownIcon, TrashIcon, CopyIcon } from "lucide-react"
 import { Fragment, memo, useCallback, useEffect, useState } from "react"
 import { TitleBar } from "../components/TitleBar"
 import { useSnapshot } from "valtio"
@@ -8,6 +8,8 @@ import { Plugin } from "@/store/plugin"
 import ActionList from "./ActionList"
 import { PluginConfig } from "./PluginConfig"
 import { confirmActions } from "@/store/confirm"
+import { GM } from "$"
+import { toast } from "sonner"
 
 interface PluginExtra extends Plugin {
   expanded: boolean
@@ -52,8 +54,23 @@ export const PluginTab = memo(() => {
                   <span className="ec-font-semibold ec-tracking-tight ec-text-card-foreground ec-truncate">{plugin.name}</span>
                   <span className="ec-text-muted-foreground ec-truncate ec-text-sm" title={plugin.description}>{plugin.description}</span>
                 </div>
+                {/* 本地插件显示复制按钮 */}
+                {plugin._source === 'local' && (
+                  <Button
+                    className="ec-border ec-border-transparent ec-flex-shrink-0 ec-ml-2"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      GM.setClipboard(plugin._sourceCode || '', 'text/plain')
+                      toast.success('插件源码已复制到剪贴板')
+                    }}
+                  >
+                    <CopyIcon className="ec-w-4 ec-h-4" />
+                  </Button>
+                )}
                 {/* 展开状态按钮 */}
                 <Button
+
                   className="ec-border ec-border-transparent ec-flex-shrink-0 ec-ml-2"
                   variant="default"
                   size="sm"
