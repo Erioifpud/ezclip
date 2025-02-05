@@ -1,4 +1,4 @@
-import type { Plugin } from '@ezclip/core';
+import type { ActionContext, Plugin } from '@ezclip/core';
 
 export default {
   namespace: 'com.ezclip.example',
@@ -17,8 +17,8 @@ export default {
       name: 'foo',
       icon: '🍎',
       description: 'foo',
-      execute: async (ctx) => {
-        alert('foo');
+      execute: async (ctx: ActionContext) => {
+        ctx.tooltip.toast.success('example action 🍎')
       }
     }
   ],

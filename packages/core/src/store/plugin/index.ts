@@ -17,8 +17,11 @@ action 是插件提供的功能单元，会作为按钮显示在 Tooltip 中
 当所有 action 都被禁用时，插件在**逻辑上**就被禁用了，因为他的 action 全都不可用
 */
 
+export type { ActionContext }
+
 export interface Action {
   id: string;          // 动作唯一标识，如 'base64.encode'
+
   name: string;        // 动作名称，如 '编码'
   icon: string;        // 动作图标
   description?: string;// 动作描述
