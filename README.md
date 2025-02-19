@@ -25,6 +25,16 @@
 1. [EzClip-Core](./packages/core) 是 EzClip 的核心模块，包含了 EzClip 的基本功能与设置界面等
 2. [EzClip-Plugins](./packages/plugins) 是 EzClip 的插件模块，包含了所有**官方源**的插件，有需要可以自建源，参考 [这里](待定)
 
+## 常见问题
+### 为什么生产和开发环境不使用同样的注入方式
+开发使用 `document.body.insertBefore` 的方式注入（将脚本动态插入到页面中），因为这个脚手架默认就使用这种方式，将所有资源一并注入。
+
+但这样会存在样式冲突，因为项目使用的是 tailwindcss，即便修改了 prefix，在注入同样使用 tailwindcss 的页面后，也无法彻底避免冲突。
+
+所以生产环境使用的是脚手架提供的 `cssSideEffects` 功能，在等待 tailwindcss 给出编译后的 css 后，手动创建 shadow root，然后将 css 插入到 shadow root 中，做一个样式隔离。
+
+目前开发环境依然会存在与页面样式冲突的问题，但生产环境不会（目前只发现了页面自己的 dark/light 会影响插件），两个环境的行为并不一致，由于 `cssSideEffects` 并不会在开发环境生效，所以在找到新的方案之前，依然会保留这种怪异的解决办法。
+
 ## 贡献
 如果你有任何想法或者建议，欢迎提交 Issues 或者 Pull Requests。
 
