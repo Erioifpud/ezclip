@@ -40,6 +40,7 @@ export default defineConfig({
               root.style.width = '0';
               root.style.height = '0';
               root.style.overflow = 'visible';
+              root.style.zIndex = '999999999';
               root.id = '$$ezclip-core-root$$';
               // 创建样式标签
               const style = document.createElement('style');
