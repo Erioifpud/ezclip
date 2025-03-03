@@ -78,8 +78,8 @@ export const useSelection = () => {
           setSelectionInfo({
             text,
             position: {
-              x: e.pageX,
-              y: e.pageY
+              x: e.clientX,
+              y: e.clientY
             }
           });
           // window.getSelection 似乎会复用同一个对象
