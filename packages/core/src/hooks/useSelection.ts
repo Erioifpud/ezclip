@@ -95,8 +95,26 @@ export const useSelection = () => {
     };
 
     document.addEventListener('mouseup', handleSelection);
-    return () => document.removeEventListener('mouseup', handleSelection);
+    return () => {
+      document.removeEventListener('mouseup', handleSelection);
+    }
   }, []);
+
+  // 发生滚动时隐藏工具栏
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!selectionInfo) {
+        return
+      }
+      setSelectionInfo(null)
+      lastSelectionInfo.current = null
+    }
+
+    document.addEventListener('scroll', handleScroll);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    }
+  }, [selectionInfo])
 
   return selectionInfo;
 };
