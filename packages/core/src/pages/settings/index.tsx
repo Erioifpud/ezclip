@@ -32,7 +32,7 @@ export const Settings = () => {
   if (!open) return null;
 
   return (
-    <div className="ec-fixed ec-inset-0 ec-z-50 ec-w-[800px] ec-h-[500px] ec-bg-white ec-backdrop-blur -ec-translate-x-1/2 -ec-translate-y-1/2 ec-top-1/2 ec-left-1/2 ec-rounded-lg ec-shadow-lg ec-overflow-hidden ec-border ec-border-gray-200">
+    <div className="ec-fixed ec-inset-0 ec-z-50 ec-w-[800px] ec-h-[500px] ec-bg-primary ec-backdrop-blur -ec-translate-x-1/2 -ec-translate-y-1/2 ec-top-1/2 ec-left-1/2 ec-rounded-lg ec-shadow-lg ec-overflow-hidden ec-border ec-border-secondary">
       <div className="ec-container ec-mx-auto ec-p-2 ec-h-full">
         <div className="ec-flex ec-gap-2 ec-h-full">
           {/* 左侧 Tab 列表 */}

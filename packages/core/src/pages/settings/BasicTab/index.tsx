@@ -37,7 +37,7 @@ export const SettingsTab = memo(() => {
   return (
     <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full">
       {/* 标题栏 */}
-      {/* <div className="ec-flex ec-items-center ec-w-full ec-h-10 ec-gap-2 ec-border-b ec-border-gray-200">
+      {/* <div className="ec-flex ec-items-center ec-w-full ec-h-10 ec-gap-2 ec-border-b ec-border-secondary">
         <SettingsIcon className="ec-w-4 ec-h-4" />
         <span>设置</span>
       </div> */}
@@ -74,7 +74,7 @@ export const SettingsTab = memo(() => {
                       backgroundColor: `hsl(${color.primaryColor})`
                     }}
                   >
-                    {isActive && <Check className="ec-h-4 ec-w-4 ec-text-white" />}
+                    {isActive && <Check className="ec-h-4 ec-w-4 ec-text-primary" />}
                   </span>
                   {color.label}
                 </Button>

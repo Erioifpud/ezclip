@@ -114,7 +114,7 @@ export const UpdatePlugin = memo((props: Props) => {
         )}
       </div>
       {/* 安装按钮 */}
-      <div className="ec-border-t ec-border-gray-200 ec-pt-4 ec-flex ec-justify-end">
+      <div className="ec-border-t ec-border-secondary ec-pt-4 ec-flex ec-justify-end">
         <Button size="sm" onClick={onSubmit}>更新</Button>
       </div>
     </div>

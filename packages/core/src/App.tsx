@@ -29,8 +29,13 @@ function App() {
     const colorSetIndex = baseColors.findIndex((color) => color.name === appState.color);
     if (colorSetIndex === -1) return {};
     const colorSet = baseColors[colorSetIndex];
-    // TODO: 暂时只支持 light 主题
-    const cssVars = colorSet.cssVars.light;
+    // TODO: 需重新规划色彩方案
+    let cssVars;
+    if (window.matchMedia('(prefers-color-scheme: dark)')) {
+      cssVars = colorSet.cssVars.dark;
+    } else {
+      cssVars = colorSet.cssVars.light;
+    }
     // add -- prefix
     return Object.fromEntries(Object.entries(cssVars).map(([key, value]) => [`--${key}`, value]));
   }, [appState.color]);
@@ -49,7 +54,7 @@ function App() {
           onClick={() => {
             settingsActions.toggleSettings();
           }}
-          className="ec-fixed ec-bottom-4 ec-left-4 ec-z-50 ec-p-4 ec-rounded-full ec-bg-white ec-border ec-border-gray-200 ec-shadow-lg ec-cursor-pointer"
+          className="ec-fixed ec-bottom-4 ec-left-4 ec-z-50 ec-p-4 ec-rounded-full ec-bg-primary ec-border ec-border-secondary ec-shadow-lg ec-cursor-pointer"
         >
           <SettingsIcon className="ec-w-4 ec-h-4" />
         </div>

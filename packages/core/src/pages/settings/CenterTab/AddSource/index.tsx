@@ -59,9 +59,9 @@ export const AddSource = memo<Props>(({ onAdded }) => {
         <PlusIcon className="ec-w-4 ec-h-4" />
       </Button>
       {/* 不使用dialog，因为dialog的样式会影响到主应用的样式 */}
-      {open && <div className="ec-fixed ec-w-80 ec-max-w-lg ec-top-1/2 ec-left-1/2 ec-bg-white ec-p-4 ec-shadow-lg ec-rounded-lg ec-border ec-border-gray-200 -ec-translate-x-1/2 -ec-translate-y-1/2">
+      {open && <div className="ec-fixed ec-w-80 ec-max-w-lg ec-top-1/2 ec-left-1/2 ec-bg-primary ec-p-4 ec-shadow-lg ec-rounded-lg ec-border ec-border-secondary -ec-translate-x-1/2 -ec-translate-y-1/2">
         {/* 标题 */}
-        <div className="ec-flex ec-justify-between ec-mb-2 ec-border-b ec-border-gray-200">
+        <div className="ec-flex ec-justify-between ec-mb-2 ec-border-b ec-border-secondary">
           <div className="ec-text-lg ec-font-bold ec-flex-grow">添加应用源</div>
           <Button className="ec-flex-shrink-0" variant="ghost" size="icon" onClick={() => setOpen(false)}>
             <X className="ec-w-4 ec-h-4" />
