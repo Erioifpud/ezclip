@@ -38,3 +38,7 @@
     scrollbar-color: #c1c1c1 #eee;
   }
 }
+
+.ec-select {
+  @apply ec-w-full ec-border ec-border-input ec-rounded-lg ec-p-2 ec-text-sm focus:ec-outline-primary;
+}

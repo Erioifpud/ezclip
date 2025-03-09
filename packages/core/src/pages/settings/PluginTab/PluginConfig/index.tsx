@@ -167,7 +167,7 @@ export const PluginConfig = memo<Props>(({ plugin }) => {
                       {/* 下拉选择框 */}
                       {type === 'select' && (
                         <select
-                          className="ec-w-full ec-border ec-border-input ec-rounded-lg ec-p-2 ec-text-sm focus:ec-outline-primary"
+                          className="ec-select"
                           value={formValue[name] as string}
                           onChange={(e) => setFormValue({ ...formValue, [name]: e.target.value })}
                         >

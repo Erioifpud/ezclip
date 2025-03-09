@@ -71,7 +71,7 @@ export const CenterTab = memo(() => {
           <AddSource onAdded={handleAdded} />
           <div className="ec-w-40">
             <select
-              className="ec-w-full ec-border ec-border-input ec-rounded-lg ec-p-2 ec-text-sm focus:ec-outline-primary"
+              className="ec-select"
               value={source}
               onChange={(e) => setSource(e.target.value)}
             >

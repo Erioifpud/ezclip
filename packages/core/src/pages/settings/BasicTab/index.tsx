@@ -121,7 +121,7 @@ export const SettingsTab = memo(() => {
         <div className="ec-space-y-1.5 ec-mt-4">
           <Label className="ec-text-md">CDN 选择</Label>
           <select
-            className="ec-w-full ec-border ec-border-input ec-rounded-lg ec-p-2 ec-text-sm focus:ec-outline-primary"
+            className="ec-select"
             value={appState.cdnRoot}
             onChange={(e) => appActions.setCDNRoot(e.target.value)}
           >
