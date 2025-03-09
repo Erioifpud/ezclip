@@ -169,4 +169,7 @@ export const pluginActions = {
   savePluginConfig(namespace: string, config: Record<string, any>) {
     pluginStore.pluginSettings[namespace] = config
   },
+  getPluginConfigField(namespace: string, field: string, defaultValue?: any) {
+    return pluginStore.pluginSettings[namespace]?.[field] ?? defaultValue
+  },
 }

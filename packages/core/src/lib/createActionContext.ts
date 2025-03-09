@@ -1,6 +1,6 @@
 import { reduce } from 'lodash-es';
 import { tooltipActions } from '../store/tooltip';
-import { Action, Plugin } from '@/store/plugin';
+import { Action, Plugin, pluginActions } from '@/store/plugin';
 import { GM, GM_download } from '$';
 import { toast } from 'sonner';
 import { getActionId } from '@/store/plugin/utils';
@@ -43,8 +43,7 @@ export interface ActionContext {
     resetStatus: () => void;
   };
   config: {
-    get: (key: string) => string | null;
-    set: (key: string, value: any) => void;
+    get: (key: string) => any;
   };
   utils: Partial<UtilsMap>;
   modifierKey: {
@@ -132,8 +131,9 @@ export const createActionContext = (ev: React.MouseEvent<HTMLButtonElement, Mous
       },
     },
     config: {
-      get: (key: string) => localStorage.getItem(key),
-      set: (key: string, value: any) => localStorage.setItem(key, JSON.stringify(value)),
+      get: (key: string, defaultValue?: any) => {
+        return pluginActions.getPluginConfigField(plugin.namespace, key, defaultValue);
+      },
     },
     // 和权限挂钩，提供一些基本的 utils
     // 如果 plugin 声明了权限，则会提供权限对应的 utils
