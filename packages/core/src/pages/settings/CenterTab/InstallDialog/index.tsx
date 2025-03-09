@@ -56,9 +56,9 @@ export const InstallDialog = memo((props: Props) => {
   }, [newPlugin, onInstall, meta])
 
   return (
-    <div className="ec-fixed ec-max-w-[400px] ec-w-[90%] ec-max-h-full ec-flex ec-flex-col ec-top-1/2 ec-left-1/2 ec-bg-primary ec-p-4 ec-shadow-lg ec-rounded-lg ec-border ec-border-secondary -ec-translate-x-1/2 -ec-translate-y-1/2">
+    <div className="ec-fixed ec-max-w-[400px] ec-w-[90%] ec-max-h-full ec-flex ec-flex-col ec-top-1/2 ec-left-1/2 ec-bg-white ec-p-4 ec-shadow-lg ec-rounded-lg ec-border ec-border-gray-200 -ec-translate-x-1/2 -ec-translate-y-1/2">
       {/* 标题 */}
-      <div className="ec-flex ec-justify-between ec-mb-2 ec-border-b ec-border-secondary ec-flex-shrink-0">
+      <div className="ec-flex ec-justify-between ec-mb-2 ec-border-b ec-border-gray-200 ec-flex-shrink-0">
         <div className="ec-text-lg ec-font-bold ec-flex-grow">
           {
             isUpdate

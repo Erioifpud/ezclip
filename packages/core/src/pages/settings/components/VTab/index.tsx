@@ -36,10 +36,10 @@ export const VTab = memo(() => {
   const state = useSnapshot(settingsStore);
 
   return (
-    <div className="ec-flex ec-flex-col ec-gap-3 ec-pr-2 ec-border-r ec-border-secondary ec-h-full ec-select-none">
+    <div className="ec-flex ec-flex-col ec-gap-3 ec-pr-2 ec-border-r ec-border-gray-200 ec-h-full ec-select-none">
       {TAB_LIST.map((tab) => (
         <div
-          className="ec-flex ec-items-center ec-w-full ec-h-10 ec-bg-secondary ec-rounded-lg ec-cursor-pointer ec-hover:ec-bg-secondary"
+          className="ec-flex ec-items-center ec-w-full ec-h-10 ec-bg-gray-100 ec-rounded-lg ec-cursor-pointer ec-hover:ec-bg-gray-200"
           key={tab.value}
           style={{
             ...(state.activeTab === tab.value ? { backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))' } : {}),
@@ -56,7 +56,7 @@ export const VTab = memo(() => {
       ))}
       <div className="ec-flex-1"></div>
       <div
-        className="ec-flex ec-items-center ec-w-fit ec-h-10 ec-bg-secondary ec-rounded-lg ec-cursor-pointer ec-hover:ec-bg-secondary"
+        className="ec-flex ec-items-center ec-w-fit ec-h-10 ec-bg-gray-100 ec-rounded-lg ec-cursor-pointer ec-hover:ec-bg-gray-200"
         onClick={() => {
           settingsActions.closeSettings();
         }}
