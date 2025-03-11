@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "entry": {
       "type": "cdn",
-      "path": "out/example/index.js"
+      "path": "packages/plugins/out/example/index.js"
     }
   }
 ]
