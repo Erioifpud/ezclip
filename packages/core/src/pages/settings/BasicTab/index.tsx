@@ -97,6 +97,7 @@ export const SettingsTab = memo(() => {
                     className="ec-text-destructive ec-border ec-border-transparent ec-flex-shrink-0 hover:ec-border-destructive hover:ec-text-destructive ec-ml-2"
                     variant="ghost"
                     size="sm"
+                    disabled={appState.sources.length === 1}
                     onClick={() => {
                       appActions.removeSource(source.url);
                     }}
