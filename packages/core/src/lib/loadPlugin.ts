@@ -4,6 +4,7 @@ import { parsePlugin } from "./parsePlugin";
 import { pluginStore } from "@/store/plugin";
 import { appStore } from "@/store/app";
 import { getActionId } from "@/store/plugin/utils";
+import { deepClone } from "./utils";
 
 export interface PluginMeta {
   id: string;
@@ -103,16 +104,16 @@ function doDataMigrate(existed: Plugin, remote: Plugin) {
       (_, i) => localVersion + i + 1
     );
     // 本地配置
-    const config = pluginStore.pluginSettings[remote.namespace] || {};
+    let tempConfig = deepClone(pluginStore.pluginSettings[remote.namespace] || {})
     // 逐版本升级
     versions.forEach(version => {
       const migrate = remote.migrates[version];
       if (typeof migrate === 'function') {
         // 执行迁移并更新配置
-        const newConfig = migrate(config) || {};
-        pluginStore.pluginSettings[remote.namespace] = newConfig;
+        tempConfig = migrate(tempConfig) || {};
       }
     });
+    pluginStore.pluginSettings[remote.namespace] = tempConfig;
   }
 }
 
