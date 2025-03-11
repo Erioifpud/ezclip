@@ -63,5 +63,6 @@ export default defineConfig({
   },
   build: {
     minify: 'esbuild',
+    outDir: 'out',
   },
 });
