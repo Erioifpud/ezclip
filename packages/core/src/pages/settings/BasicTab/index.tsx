@@ -35,7 +35,7 @@ export const SettingsTab = memo(() => {
   const appState = useSnapshot(appStore);
 
   return (
-    <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full">
+    <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full ec-text-secondary-foreground">
       {/* 标题栏 */}
       {/* <div className="ec-flex ec-items-center ec-w-full ec-h-10 ec-gap-2 ec-border-b ec-border-gray-200">
         <SettingsIcon className="ec-w-4 ec-h-4" />

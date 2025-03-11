@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 // LLM 根据 README.md 生成的，有需要再调整吧
 export const AboutTab = memo(() => {
   return (
-    <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full">
+    <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full ec-text-secondary-foreground">
       {/* 标题栏 */}
       <TitleBar title="关于" icon={<InfoIcon className="ec-w-4 ec-h-4" />} />
       {/* 内容区 */}

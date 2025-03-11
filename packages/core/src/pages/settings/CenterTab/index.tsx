@@ -63,7 +63,7 @@ export const CenterTab = memo(() => {
   }, [])
 
   return (
-    <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full">
+    <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full ec-text-secondary-foreground">
       {/* 标题栏 */}
       <TitleBar title="插件中心" icon={<AppWindowIcon className="ec-w-4 ec-h-4" />}>
         <div className="ec-flex ec-gap-2 ec-justify-end">

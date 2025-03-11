@@ -39,7 +39,7 @@ export const PluginTab = memo(() => {
   }, [plugins])
 
   return (
-    <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full">
+    <div className="ec-flex ec-flex-col ec-gap-4 ec-h-full ec-text-secondary-foreground">
       {/* 标题栏 */}
       <TitleBar title="插件管理" icon={<PlugIcon className="ec-w-4 ec-h-4" />} />
       {/* 内容区 */}
