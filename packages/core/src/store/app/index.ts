@@ -1,34 +1,14 @@
 import { GM_getValue, GM_setValue } from "$";
 import { throttle } from "lodash-es";
 import { proxy, subscribe } from "valtio";
-
-export interface Source {
-  name: string;
-  url: string;
-}
-
-export type Theme = 'light' | 'dark' | 'system';
-
-export type Color = 'zinc' | 'red' | 'rose' | 'orange' | 'green' | 'blue' | 'yellow' | 'violet'
-
-export interface AppState {
-  // 插件来源
-  sources: Source[];
-  // 禁用脚本的站点
-  blackList: string[];
-  // 主题
-  theme: Theme;
-  // 颜色
-  color: Color;
-  // 插件 CDN 根路径
-  cdnRoot: string;
-}
-
-// --------------------------------------------
+import { CURRENT_VERSION, updateAppState } from "./version";
+import { AppState, Color, Source } from "./type";
 
 // 从 GM_getValue 恢复数据
 function hydrateAppStore(): AppState {
+  // 更新这里的数据时，需要先去 version.ts 中更新版本与数据迁移函数
   const data = GM_getValue<AppState>('app_store', {
+    version: CURRENT_VERSION,
     sources: [
       {
         name: '官方源',
@@ -41,7 +21,9 @@ function hydrateAppStore(): AppState {
     cdnRoot: 'https://cdn.jsdelivr.net/gh/Erioifpud/ezclip@main',
   });
 
-  return data;
+  let latestData = updateAppState(data)
+  // 转换完成之后就是最新的 AppState
+  return latestData as AppState;
 }
 
 export const appStore = proxy<AppState>(hydrateAppStore());

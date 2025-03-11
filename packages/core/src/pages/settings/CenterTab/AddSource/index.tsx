@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { appActions, Source } from "@/store/app"
+import { appActions } from "@/store/app"
+import { Source } from "@/store/app/type"
 import { PlusIcon, X } from "lucide-react"
 import { memo, useCallback, useState } from "react"
 import { toast } from "sonner"
