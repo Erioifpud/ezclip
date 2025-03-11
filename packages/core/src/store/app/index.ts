@@ -12,13 +12,13 @@ function hydrateAppStore(): AppState {
     sources: [
       {
         name: '官方源',
-        url: 'https://cdn.jsdelivr.net/gh/Erioifpud/ezclip@main/packages/plugins/registry.json'
+        url: 'https://cdn.jsdelivr.net/gh/Erioifpud/ezclip@latest/packages/plugins/registry.json'
       }
     ],
     blackList: [],
     theme: 'light',
     color: 'blue',
-    cdnRoot: 'https://cdn.jsdelivr.net/gh/Erioifpud/ezclip@main',
+    cdnRoot: 'https://cdn.jsdelivr.net/gh/Erioifpud/ezclip@latest',
   });
 
   let latestData = updateAppState(data)
