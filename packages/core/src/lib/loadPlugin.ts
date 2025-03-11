@@ -22,7 +22,9 @@ function getPluginUrl(entry: PluginMeta['entry']) {
     if (!cdnRoot) {
       throw new Error(`Source doesn't support CDN`);
     }
-    return `${cdnRoot}${entry.path}`;
+    const normalizedBase = cdnRoot.endsWith('/') ? cdnRoot : `${cdnRoot}/`;
+    const url = new URL(entry.path, normalizedBase);
+    return url.toString();
   }
   return entry.path;
 }
