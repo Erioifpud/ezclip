@@ -25,10 +25,6 @@ const CDN_LIST = [
     name: 'jsDelivr',
     value: 'https://cdn.jsdelivr.net/npm',
   },
-  {
-    name: 'unpkg',
-    value: 'https://unpkg.com',
-  },
 ]
 
 export const SettingsTab = memo(() => {
