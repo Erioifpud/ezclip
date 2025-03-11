@@ -20,12 +20,12 @@ const COLOR_SETS = baseColors
     }
   })
 
-const CDN_LIST = [
-  {
-    name: 'jsDelivr',
-    value: 'https://cdn.jsdelivr.net/npm',
-  },
-]
+// const CDN_LIST = [
+//   {
+//     name: 'jsDelivr',
+//     value: 'https://cdn.jsdelivr.net/gh/Erioifpud/ezclip@main',
+//   },
+// ]
 
 export const SettingsTab = memo(() => {
   const appState = useSnapshot(appStore);
@@ -114,7 +114,7 @@ export const SettingsTab = memo(() => {
         </div>
 
         {/* CDN 选择 */}
-        <div className="ec-space-y-1.5 ec-mt-4">
+        {/* <div className="ec-space-y-1.5 ec-mt-4">
           <Label className="ec-text-md">CDN 选择</Label>
           <select
             className="ec-select"
@@ -125,7 +125,7 @@ export const SettingsTab = memo(() => {
               <option key={item.value} value={item.value}>{item.name}</option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         {/* 网站黑名单 */}
         <div className="ec-space-y-1.5 ec-mt-4">

@@ -29,11 +29,16 @@ export interface AppState {
 // 从 GM_getValue 恢复数据
 function hydrateAppStore(): AppState {
   const data = GM_getValue<AppState>('app_store', {
-    sources: [],
+    sources: [
+      {
+        name: '官方源',
+        url: 'https://cdn.jsdelivr.net/gh/Erioifpud/ezclip@main/packages/plugins/registry.json'
+      }
+    ],
     blackList: [],
     theme: 'light',
     color: 'blue',
-    cdnRoot: 'https://cdn.jsdelivr.net/npm',
+    cdnRoot: 'https://cdn.jsdelivr.net/gh/Erioifpud/ezclip@main',
   });
 
   return data;
