@@ -161,9 +161,10 @@ export const pluginActions = {
     pluginStore.enabledActions = pluginStore.enabledActions.filter(item => item !== actionId)
   },
   uninstallPlugin(namespace: string) {
-    // 只影响 remotePlugins
+    // 只影响 remotePlugins 和 localPlugins
     // 不用删除配置
     pluginStore.remotePlugins = pluginStore.remotePlugins.filter(plugin => plugin.namespace !== namespace)
+    pluginStore.localPlugins = pluginStore.localPlugins.filter(plugin => plugin.namespace !== namespace)
     pluginStore.enabledActions = pluginStore.enabledActions.filter(item => !item.startsWith(namespace))
   },
   savePluginConfig(namespace: string, config: Record<string, any>) {
