@@ -8,7 +8,7 @@ export default {
     data: 0
   },
   author: 'ezclip',
-  description: '搜索跳转模版插件',
+  description: '搜索跳转插件',
   permissions: ['open'],
   configForm: [
     {
