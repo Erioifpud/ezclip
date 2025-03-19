@@ -1,9 +1,9 @@
-import { Plugin } from "@/store/plugin";
+import { Plugin, pluginActions } from "@/store/plugin";
 import { createSandbox } from "./sandbox";
 import { parsePlugin } from "./parsePlugin";
 import { pluginStore } from "@/store/plugin";
 import { appStore } from "@/store/app";
-import { getActionId } from "@/store/plugin/utils";
+import { getActionId, initPluginConfig } from "@/store/plugin/utils";
 import { deepClone } from "./utils";
 
 export interface PluginMeta {
@@ -134,6 +134,10 @@ export function installPlugin(plugin: Plugin, source: 'remote' | 'local') {
 
     pluginList.splice(isExisted, 1);
     enabledActions.splice(isExisted, 1);
+  } else {
+    // 新安装时初始化设置（如果有）
+    const initConfig = initPluginConfig(plugin)
+    pluginActions.savePluginConfig(plugin.namespace, initConfig)
   }
   pluginStore[pluginKey] = [...pluginList, plugin];
   // 默认启用新插件的所有 action
