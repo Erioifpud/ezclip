@@ -1,6 +1,6 @@
 # 应用源
 如果你要添加自己的应用源，要做两个准备：
-1. 提供 UMD 形式导出的代码，结构参考 [plugin.md](./plugin.md)
+1. 提供 UMD 或者 CommonJS 形式导出的代码，结构参考 [plugin.md](./plugin.md)
 2. 提供一份 json 文件描述源中的插件列表
 
 ## 插件列表
