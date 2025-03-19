@@ -5,15 +5,16 @@ export default defineConfig({
     outDir: 'out',
     lib: {
       entry: {
-        example: 'src/example/index.ts'
+        example: 'src/example/index.ts',
+        search: 'src/search/index.ts',
       },
-      formats: ['umd'],
+      formats: ['cjs'],
       name: '[name]'
     },
     rollupOptions: {
       output: {
         entryFileNames: '[name]/index.js',
-        format: 'umd',
+        format: 'cjs',
         exports: 'default',
         extend: true,
       }

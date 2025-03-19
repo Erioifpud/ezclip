@@ -8,5 +8,15 @@
       "type": "cdn",
       "path": "packages/plugins/out/example/index.js"
     }
+  },
+  {
+    "id": "com.ezclip.search",
+    "name": "搜索",
+    "description": "搜索跳转插件",
+    "version": "1.0.0",
+    "entry": {
+      "type": "cdn",
+      "path": "packages/plugins/out/search/index.js"
+    }
   }
 ]
