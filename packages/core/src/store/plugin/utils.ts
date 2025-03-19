@@ -68,5 +68,5 @@ export function initPluginConfig(plugin: Plugin): FormValueType<typeof plugin.co
         break;
     }
     return acc;
-  }, {} as Record<string, any>);
+  }, {} as Record<string, any>) ?? {};
 }
